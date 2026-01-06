@@ -1,4 +1,12 @@
 <Layer Type = "ActorFrame"><children>
+	
+	<Layer Type = "ActorFrame" Name = "endingaf" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer File = "assets/gameoverbg" Name = "finbg"/>
+		<Layer File = "assets/eel.txt" Name = "endfish"/>
+		<Layer File = "assets/endtext" Name = "endtext"/>
+		<Layer Type = "Quad" Name = "endquad"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorProxy" Name = "PC[1]" />
 	<Layer Type = "ActorProxy" Name = "PC[2]" />
 	<Layer Type = "ActorProxy" Name = "PJ[1]" />
