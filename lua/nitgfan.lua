@@ -118,9 +118,9 @@ end
 
 local function womp(beat)
 	for i = beat,beat+4 do
-		kick(i,0.25,1,'Expo','Expo',0,500,'drunkz')
-		kick(i,0.25,1,'Expo','Expo',0,100,'drunk')
-		kick(i,0.5,2,'Expo','Expo',0,-2000,'tinyz')
+		kick(i,0.5,1.5,'Expo','Expo',0,200,'drunkz')
+		kick(i,0.5,1,'Expo','Expo',0,100,'drunk')
+		kick(i,0.5,1,'Expo','Expo',0,-4000,'tinyz')
 		kick(i,0.5,2,'Expo','Expo',0,-100,'cooltiny')
 		kick(i,0.5,1,'Expo','Elastic',100,125,'zoomy')
 	end
@@ -128,7 +128,7 @@ end
 
 ----------------- Intro Setup --------------------------------------
 AfSetup(itgaf,90)
-set{0,-50,'squarezperiod',100,'middle',0,'zoom',10000,'drunkzspeed',10000,'tipsyspeed',10000,'drunkspeed',500,'drunkspacing'}
+set{0,-50,'squarezperiod',100,'middle',0,'zoom',10000,'drunkzspeed',10000,'drunkspeed',1000,'drunkspacing',500,'tipsyspeed'}
 
 func {0, function()
 	itg:zoom(0)
@@ -137,9 +137,10 @@ end}
 func_ease {3.5, 1, ExpoS, 0, 1, 'itg:zoom'}
 ease2{4,1,ExpoS,100,'zoom'}
 
+
 local f = 1
 for i = 4,51 do
-	kick(i,0.25,0.5,'Expo','Expo',0,400*f,'squarez')
+	kick(i,0.25,0.5,'Expo','Expo',0,300*f,'squarez')
 	kick(i,0.25,0.5,'Expo','Expo',0,-100,'tiny')
 	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg:z'}
 	func_ease {i, 0.5, ExpoO, 25, 0, 'itg:z'}
@@ -187,10 +188,10 @@ womp(36)
 womp(44)
 
 
-ease{36,24,ExpoI,0,'zoom',200,'zoomz',90,'coolrotationx'}
-func_ease{36, 24, ExpoI, 1, 0, 'itg:zoom2'}
+ease{36,24,QuartI,0,'zoom',200,'zoomz',45,'coolrotationx'}
+func_ease{36, 24, QuartI, 1, 0, 'itg:zoom2'}
 
-add{52,6,CubicI,360*3,'coolrotationy'}
+add{52,6,CubicI,360*4,'coolrotationy'}
 add{58,2,linear,360*6,'coolrotationy'}
 add{60,4,CubicO,360*3,'coolrotationy'}
 set{64,0,'coolrotationy'}
@@ -205,12 +206,32 @@ end}
 
 
 
+---------------------- FIGHT ME OR DIE ------------------------------
+AfSetup(textaf,90)
+
+textobj:GetShader():uniformTexture('matcapTexture',texttex:GetTexture())
+
+modelzoom(textobj,1.25)
+
+textobj:y(sh/8)
+
+perframe{192,6,function(beat,poptions)
+	local sin = math.sin(beat*math.pi*0.25)
+	local cos = math.cos(beat*math.pi*0.25)
+	textobj:rotationx(-5*sin)
+end}
+
+func {192, function()
+	textaf:hidden(0)
+end}
 
 
+func {197, function()
+	textaf:hidden(1)
+end}
 
-
-
-
+func_ease {192, 3, WiggleO, sh*1.25, sh/8, 'textobj:y'}
+func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
 
 
 ---------------------- Fin Setup ---------------------------------
