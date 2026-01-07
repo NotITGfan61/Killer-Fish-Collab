@@ -1,0 +1,12 @@
+<Plugin LoadCommand = "%xero(function(self)
+
+    --put playfields in the middle of the screen
+	local defaultPos = {}
+	for pn = 1, xero.max_pn do
+		defaultPos[pn] = {SCREENMAN('PlayerP' .. pn):GetX(), scx-SCREENMAN('PlayerP' .. pn):GetX()}
+	end
+	definemod {'middle', function(percent, plr)
+		SCREENMAN('PlayerP' .. plr):x(defaultPos[plr][1]+defaultPos[plr][2]*(percent/100))
+	end}
+
+end)" />

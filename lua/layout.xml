@@ -1,5 +1,10 @@
 <Layer Type = "ActorFrame"><children>
 	
+	
+	<Layer Type = "ActorFrame" Name = "itgaf" OnCommand="%function(self) self:hidden(0)end" ><children>
+		<Layer File = "assets/itg" Name = "itg"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorFrame" Name = "endingaf" OnCommand="%function(self) self:hidden(1)end" ><children>
 		<Layer File = "assets/gameoverbg" Name = "finbg"/>
 		<Layer File = "assets/eel.txt" Name = "endfish"/>
