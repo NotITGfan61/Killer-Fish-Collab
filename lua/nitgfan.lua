@@ -205,7 +205,7 @@ end}
 
 
 
-
+--[[
 ---------------------- FIGHT ME OR DIE ------------------------------
 AfSetup(textaf,90)
 
@@ -232,7 +232,7 @@ end}
 
 func_ease {192, 3, WiggleO, sh*1.25, sh/8, 'textobj:y'}
 func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
-
+--]]
 
 ---------------------- Fin Setup ---------------------------------
 AfSetup(endingaf,90)

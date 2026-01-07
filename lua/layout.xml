@@ -12,6 +12,18 @@
 		<Layer Type = "Quad" Name = "endquad"/>
 	</children></Layer>
 	
+	<Layer File = "assets/plastic/sky.png" Name = "tex_sky"/>
+	<Layer Type = "ActorFrame" Name = "above.frame"><children>
+		<Layer File = "assets/plastic/sphere.obj" Name = "above.sky"/>
+		<Layer Type = "Sprite" Frag = "assets/plastic/shaders/waterSUPERSEX.frag" Texture = "assets/plastic/stars2.jpg" Name = "above.ocean"/>
+		<Layer Type = "Quad" Name = "above.oceanlight"/>
+	</children></Layer>
+	
+	<Layer Type = "ActorFrame" Name = "under.frame"><children>
+		<Layer Type = "Sprite" Frag="assets/plastic/shaders/underwatar2.frag" Texture="assets/plastic/black.jpg" Name = "under.water"/>
+		<Layer Type = "Sprite" Frag="assets/plastic/shaders/sunrays.frag" Texture="assets/plastic/black.jpg" Name = "under.rays"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorProxy" Name = "PC[1]" />
 	<Layer Type = "ActorProxy" Name = "PC[2]" />
 	<Layer Type = "ActorProxy" Name = "PJ[1]" />
