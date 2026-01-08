@@ -1,5 +1,6 @@
 <Layer Type = "ActorFrame"><children>
 	
+	<Layer File = "assets/nitgfan/gold" Name = "texttex" InitCommand="%xero(function(self) self:hidden(1) end)"/>
 	
 	<Layer Type = "ActorFrame" Name = "itgaf" OnCommand="%function(self) self:hidden(0)end" ><children>
 		<Layer File = "assets/itg" Name = "itg"/>
@@ -22,6 +23,10 @@
 	<Layer Type = "ActorFrame" Name = "under.frame"><children>
 		<Layer Type = "Sprite" Frag="assets/plastic/shaders/underwatar2.frag" Texture="assets/plastic/black.jpg" Name = "under.water"/>
 		<Layer Type = "Sprite" Frag="assets/plastic/shaders/sunrays.frag" Texture="assets/plastic/black.jpg" Name = "under.rays"/>
+	</children></Layer>
+	
+	<Layer Type = "ActorFrame" Name = "textaf" OnCommand="%function(self) self:hidden(1) end" ><children>
+		<Layer Frag="assets/shaders/matcap.frag" File = "assets/nitgfan/text.obj" Name = "textobj"/>
 	</children></Layer>
 	
 	<Layer Type = "ActorProxy" Name = "PC[1]" />

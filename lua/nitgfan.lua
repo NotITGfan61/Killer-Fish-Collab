@@ -205,13 +205,13 @@ end}
 
 
 
---[[
+
 ---------------------- FIGHT ME OR DIE ------------------------------
 AfSetup(textaf,90)
 
 textobj:GetShader():uniformTexture('matcapTexture',texttex:GetTexture())
 
-modelzoom(textobj,1.25)
+--modelzoom(textobj,1.25)
 
 textobj:y(sh/8)
 
@@ -230,9 +230,12 @@ func {197, function()
 	textaf:hidden(1)
 end}
 
-func_ease {192, 3, WiggleO, sh*1.25, sh/8, 'textobj:y'}
+func_ease {192, 3, WiggleO, 0, 1.25, function(p)
+	modelzoom(textobj,p)
+end}
+
 func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
---]]
+
 
 ---------------------- Fin Setup ---------------------------------
 AfSetup(endingaf,90)
