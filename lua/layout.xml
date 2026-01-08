@@ -29,6 +29,11 @@
 		<Layer Frag="assets/shaders/matcap.frag" File = "assets/nitgfan/text.obj" Name = "textobj"/>
 	</children></Layer>
 	
+	<Layer Type = "ActorFrame" Name = "drop4.ppframe"><children>
+		<Layer Type = "ActorProxy" Name = "PP_D4[1]"/>
+		<Layer Type = "ActorProxy" Name = "PP_D4[2]"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorProxy" Name = "PC[1]" />
 	<Layer Type = "ActorProxy" Name = "PC[2]" />
 	<Layer Type = "ActorProxy" Name = "PJ[1]" />
