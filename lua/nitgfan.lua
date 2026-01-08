@@ -119,16 +119,18 @@ end
 local function womp(beat)
 	for i = beat,beat+4 do
 		kick(i,0.5,1.5,'Expo','Expo',0,200,'drunkz')
-		kick(i,0.5,1,'Expo','Expo',0,100,'drunk')
+		kick(i,0.5,1,'Expo','Expo',0,75,'drunk')
 		kick(i,0.5,1,'Expo','Expo',0,-4000,'tinyz')
 		kick(i,0.5,2,'Expo','Expo',0,-100,'cooltiny')
 		kick(i,0.5,1,'Expo','Elastic',100,125,'zoomy')
+		kick(i,0.5,1.5,'Expo','Expo',0,-50,'flip')
+		kick(i,0.5,1.5,'Expo','Expo',0,25,'brake')
 	end
 end
 
 ----------------- Intro Setup --------------------------------------
 AfSetup(itgaf,90)
-set{0,-50,'squarezperiod',100,'middle',0,'zoom',10000,'drunkzspeed',10000,'drunkspeed',1000,'drunkspacing',500,'tipsyspeed'}
+set{0,-50,'squarezperiod',100,'middle',0,'zoom',10000,'drunkzspeed',10000,'drunkspeed',1000,'drunkspacing'}
 
 func {0, function()
 	itg:zoom(0)
@@ -179,6 +181,8 @@ local f = 1
 for i=1,table.getn(introspin) do
 	local beat = introspin[i][1]
 	ease{beat,1,flip(ExpoO),-300,'cooltiny'}
+	ease{beat,1,flip(ExpoO),50,'drunk'}
+	func_ease {beat, 2, popElastic:params(1,25), 3, 'itg:x'}
 	func_ease {beat, 1, ExpoO, 0, -25, 'itg:z2'}
 	
 f = f*-1
@@ -201,7 +205,6 @@ set{64,0,'coolrotationy'}
 func {60, function()
 	itgaf:hidden(1)
 end}
-
 
 
 
@@ -229,6 +232,7 @@ end}
 func {197, function()
 	textaf:hidden(1)
 end}
+
 
 func_ease {192, 3, WiggleO, 0, 1.25, function(p)
 	modelzoom(textobj,p)
