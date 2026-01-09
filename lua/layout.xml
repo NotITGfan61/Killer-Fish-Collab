@@ -6,6 +6,12 @@
 		<Layer File = "assets/itg" Name = "itg"/>
 	</children></Layer>
 	
+	<Layer Type = "ActorFrame" Name = "itgfishaf" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer Type = "ActorFrame" Name = "itgfishaf2" ><children>
+			<Layer File = "assets/eel.txt" Vert = "assets/fish.vert" Name = "itgfish"/>
+		</children></Layer>
+	</children></Layer>
+	
 	<Layer Type = "ActorFrame" Name = "endingaf" OnCommand="%function(self) self:hidden(1)end" ><children>
 		<Layer File = "assets/gameoverbg" Name = "finbg"/>
 		<Layer File = "assets/eel.txt" Name = "endfish"/>

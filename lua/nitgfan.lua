@@ -181,6 +181,21 @@ introspin = {
 	{60.000,3,1},
 }
 
+fishspeech = {
+	{685.500,0,2,length=1.000},
+	{686.500,3,2,length=1.167},
+	{687.667,0,2,length=0.333},
+	{688.000,3,2,length=0.750},
+	{688.750,0,2,length=1.000},
+	{689.750,3,2,length=1.250},
+	{692.500,0,2,length=1.000},
+	{693.500,3,2,length=0.500},
+	{694.000,0,2,length=1.000},
+	{695.000,3,2,length=1.000},
+	{696.000,0,2,length=1.000},
+	{697.000,3,2,length=2.000},
+}
+
 function swap2(t)
 	t[1] = t[1] - (t[2]*0.5)
 	return swap(t)
@@ -311,6 +326,23 @@ end}
 func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
 
 ---------------------- Outro Setup --------------------------------
+AfSetup(itgfishaf,90)
+
+modelzoom(itgfish,0)
+itgfish:rotationy(-90)
+
+definemod{'itgfishamp', 'itgfishperiod', 'itgfishspeed', function(amp, per, spd)
+	itgfish:GetShader():uniform1f('amp', amp)
+	itgfish:GetShader():uniform1f('per', per)
+	itgfish:GetShader():uniform1f('spd', spd)
+end}
+
+definemod{'itgfishrotx', 'itgfishroty', 'itgfishrotz', 'itgfishrotz2', function(rx, ry, rz,rz2)
+	itgfishaf2:rotationx(rx):rotationy(ry):rotationz(rz+rz2)
+end}
+
+set{668,2,'itgfishamp',30,'itgfishperiod',0.5,'itgfishspeed'}
+
 
 definemod {'itgz2', function(p)
     itg:z2(p)
@@ -355,12 +387,37 @@ ease{668,692-668,linear,100,'brake',0.5,'xmod',314/6,'dizzy'}
 ease{668,692-668,ExpoI,-200,'itgz2'}
 add2{692,2,WiggleS,-400,'itgz2',200,'tipsy',500,'longholds'}
 
+
 ease{696,4,WiggleI,200,'itgz2',5000,'z'}
 
 kick(692,0.5,4,'Expo','Elastic',100,200,'zoomx')
 
 ease{684,700-684,ExpoI,-1000,'tinyy',500,'zoomz',-90,'rotationx'}
-ease{692,12,CubicS,360*5,'coolrotationy'}
+ease{692,12,CubicS,360*7,'coolrotationy'}
+
+local f = 1
+for i=1,table.getn(fishspeech) do
+	local beat = fishspeech[i][1]
+	local len = fishspeech[i].length
+	ease{beat,len,bounce,-5,'itgfishrotx'}
+	ease{beat,len,bounce,-5*f,'itgfishroty'}
+f = f*-1
+end
+
+func {668, function()
+	itgfishaf:hidden(0)
+end}
+
+add{697,4,SineS,360*3,'itgfishrotz2'}
+
+func_ease{691, 2, WiggleS, 0, -200, 'itgfishaf2:z'}
+
+func_ease {685.5-1, 2, ExpoS, 0, 8, function(p)
+	modelzoom(itgfish,p)
+end}
+
+func_ease{696, 4, WiggleI, -200, 400, 'itgfishaf2:z'}
+
 
 ---------------------- Fin Setup ---------------------------------
 AfSetup(endingaf,90)
@@ -386,6 +443,7 @@ set{700,100,'hide'}
 
 func {700, function()
 	itgaf:hidden(1)
+	itgfishaf:hidden(1)
 	endingaf:hidden(0)
 end}
 
