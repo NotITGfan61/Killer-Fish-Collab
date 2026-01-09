@@ -61,6 +61,76 @@ videogameflip = {
 	{49.500,3,1},
 	{50.250,0,1},
 	{51.500,3,1},
+	{636.500,0,1},
+	{637.500,3,1},
+	{637.750,0,1},
+	{638.500,3,1},
+	{639.250,0,1},
+	{639.750,3,1},
+	{640.500,0,1},
+	{641.500,3,1},
+	{642.250,0,1},
+	{643.500,3,1},
+	{644.500,0,1},
+	{645.500,3,1},
+	{645.750,0,1},
+	{646.500,3,1},
+	{647.250,0,1},
+	{647.750,3,1},
+	{648.500,0,1},
+	{649.500,3,1},
+	{650.250,0,1},
+	{651.500,3,1},
+	{652.500,0,1},
+	{653.500,3,1},
+	{653.750,0,1},
+	{654.500,3,1},
+	{655.250,0,1},
+	{655.750,3,1},
+	{656.500,0,1},
+	{657.500,3,1},
+	{658.250,0,1},
+	{659.500,3,1},
+	{660.500,0,1},
+	{661.500,3,1},
+	{661.750,0,1},
+	{662.500,3,1},
+	{663.250,0,1},
+	{663.750,3,1},
+	{664.500,0,1},
+	{665.500,3,1},
+	{666.250,0,1},
+	{667.500,3,1},
+	{668.500,0,1},
+	{669.500,3,1},
+	{669.750,0,1},
+	{670.500,3,1},
+	{671.250,0,1},
+	{671.750,3,1},
+	{672.500,0,1},
+	{673.500,3,1},
+	{674.250,0,1},
+	{675.500,3,1},
+	{676.500,0,1},
+	{677.500,3,1},
+	{677.750,0,1},
+	{678.500,3,1},
+	{679.250,0,1},
+	{679.750,3,1},
+	{680.500,0,1},
+	{681.500,3,1},
+	{682.250,0,1},
+	{683.500,3,1},
+	{684.500,0,1},
+	{685.500,3,1},
+	{685.750,0,1},
+	{686.500,3,1},
+	{687.250,0,1},
+	{687.750,3,1},
+	{688.500,0,1},
+	{689.500,3,1},
+	{690.250,0,1},
+	{691.500,3,1},
 }
 
 videogameflip2 = {
@@ -240,6 +310,57 @@ end}
 
 func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
 
+---------------------- Outro Setup --------------------------------
+
+definemod {'itgz2', function(p)
+    itg:z2(p)
+end}
+
+func {636, function()
+	above.frame:hidden(1)
+	itgaf:hidden(0)
+	itg:zoom(1)
+	itg:zoom2(1)
+	itg:z2(0)
+end}
+
+ease{636,16,linear,100,'hidden'}
+
+local f = 1
+for i = 636,660,8 do
+	ease{i,4,SineO,0.5,'xmod'}
+	ease{i+4,4,SineI,2,'xmod'}
+f = f * -1
+end
+
+local f = 1
+for i = 636,691 do
+	kick(i,0.25,0.5,'Expo','Expo',0,300*f,'squarez')
+	kick(i,0.25,0.5,'Expo','Expo',0,-100,'tiny')
+	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg:z'}
+	func_ease {i, 0.5, ExpoO, 25, 0, 'itg:z'}
+f = f * -1
+end
+
+func_ease{636, 32, linear, 100, 0, 'itg:z2'}
+ease{636,32,flip(linear),100,'z'}
+
+add2{668,4,inverseExpo,-500,'z'}
+
+set{668,0,'hidden',10000,'drunkspeed'}
+
+
+ease{668,692-668,linear,100,'brake',0.5,'xmod',314/6,'dizzy'}
+
+ease{668,692-668,ExpoI,-200,'itgz2'}
+add2{692,2,WiggleS,-400,'itgz2',200,'tipsy',500,'longholds'}
+
+ease{696,4,WiggleI,200,'itgz2',5000,'z'}
+
+kick(692,0.5,4,'Expo','Elastic',100,200,'zoomx')
+
+ease{684,700-684,ExpoI,-1000,'tinyy',500,'zoomz',-90,'rotationx'}
+ease{692,12,CubicS,360*5,'coolrotationy'}
 
 ---------------------- Fin Setup ---------------------------------
 AfSetup(endingaf,90)
@@ -251,16 +372,30 @@ endfish:rotationx(-25)
 endfish:rotationz(-25)
 
 endquad:zoomto(sw,sh)
-endquad:diffuse(0,0,0,1)
+endquad:diffuse(0,0,0,0)
 
 endtext:zoomto(sw/2,sh/2)
 endtext:y(-sh/4)
 
+endfish:hidden(1)
+endquad:hidden(1)
+endtext:hidden(1)
+finbg:hidden(1)
+
 set{700,100,'hide'}
 
 func {700, function()
+	itgaf:hidden(1)
 	endingaf:hidden(0)
 end}
+
+func {701.5, function()
+	endfish:hidden(0)
+	endquad:hidden(0)
+	endtext:hidden(0)
+	finbg:hidden(0)
+end}
+
 
 func_ease {701.5, 16, outExpo, 360, 0, 'endingaf:z'}
 func_ease {701.5, 16, outExpo, 1, 0, 'endquad:diffusealpha'}

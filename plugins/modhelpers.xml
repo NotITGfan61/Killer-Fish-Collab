@@ -13,6 +13,7 @@
 	
 	WiggleS = inOutElastic:param(1,0.5)
 	WiggleO = outElastic:param(1,0.5)
+	WiggleI = inElastic:param(1,0.5)
 	
 	function modulo(a, b)
 		return a - math.floor(a/b)*b;
