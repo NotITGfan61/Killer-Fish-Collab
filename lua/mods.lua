@@ -38,7 +38,12 @@ definemod {'fov', function(fov, pn)
 	P[pn]'Combo':fov(adjustedfov)
 end}
 
-
+function castSound(beat) --play the spell cast sound
+	func{beat, function()
+		casting.sound:get():volume(PREFSMAN:GetPreference("SoundVolume")*0.75)
+		casting.sound:start()
+	end, persist=true}
+end
 
 
 setdefault {2, 'xmod', 410, 'drawsizepixels', -114, 'drawsizebackpixels', 90, 'fov', 100, 'dizzyholds', 100, 'stealthpastreceptors', 100, 'zbuffer', 100, 'modtimer', 100,'cover'}
@@ -103,6 +108,12 @@ under.water:zoomto(sw,-sh)
 under.rays:xy(0, 0)
 under.rays:zoomto(sw, sh)
 
+--spell casting animation stuffs
+casting.frame:xy(scx, scy)
+casting.frame:hidden(1)
+
+casting.spellcirc:zoom(0.5)
+
 ----------------------------------------------------------------------------------------------DEFINEMOD STUFF GOES HERE----------------------------------------------------------------------------------------------------------------------
 
 --underwater bg definemods
@@ -128,6 +139,18 @@ definemod {'sunraypos', function(b)
     under.rays:GetShader():uniform1f('sunraypos', b)
 end}
 setdefault{80, 'sunraypos'}
+
+--spell casting definemods
+definemod{'spellcirczoom', 'spellcircrotz', 'spellcircalpha', function(zm, rz, alp)
+	casting.spellcirc:zoom(zm/100):rotationz(rz):diffusealpha(alp/100)
+end}
+setdefault{100, 'spellcirczoom'}
+
+definemod {'shake', function(p,pn) -- I'm using this hopefully this won't cause issue
+	P[pn]:vibrate()
+	P[pn]:effectmagnitude(p,0,0)
+	P[pn]:effectclock('beat')
+end}
 
 ----------------------------------------------------------------------------------------------FUNCTION STUFF GOES HERE-----------------------------------------------------------------------------------------------------------------------
 
