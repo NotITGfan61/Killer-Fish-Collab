@@ -1,6 +1,6 @@
 <Layer Type = "ActorFrame"><children>
 	
-	<Layer File = "assets/nitgfan/gold" Name = "texttex" InitCommand="%xero(function(self) self:hidden(1) end)"/>
+	<Layer File = "assets/nitgfan/gold" Name = "tex_textmatcap" InitCommand="%xero(function(self) self:hidden(1) end)"/>
 	
 	<Layer File = "assets/plastic/sky.png" Name = "tex_sky"/>
 	<Layer Type = "ActorFrame" Name = "above.frame"><children>
@@ -14,8 +14,8 @@
 		<Layer Type = "Sprite" Frag="assets/plastic/shaders/sunrays.frag" Texture="assets/plastic/black.jpg" Name = "under.rays"/>
 	</children></Layer>
 	
-	<Layer Type = "ActorFrame" Name = "itgaf" OnCommand="%function(self) self:hidden(0)end" ><children>
-		<Layer File = "assets/itg" Name = "itg"/>
+	<Layer Type = "ActorFrame" Name = "itg.frame" OnCommand="%function(self) self:hidden(0)end" ><children>
+		<Layer File = "assets/itg" Name = "itg.bg"/>
 	</children></Layer>
 	
 	<Layer Type = "ActorFrame" Name = "casting.frame"><children>
@@ -23,11 +23,17 @@
 		<ActorSound File="assets/spell.ogg" Name = "casting.sound"/>
 	</children></Layer>
 	
-	<Layer Type = "ActorFrame" Name = "itgfishaf" OnCommand="%function(self) self:hidden(1)end" ><children>
-		<Layer Type = "ActorFrame" Name = "itgfishaf2" ><children>
-			<Layer File = "assets/eel.txt" Vert = "assets/fish.vert" Name = "itgfish"/>
+	<Layer Type = "ActorFrame" Name = "itgfish.frame" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer Type = "ActorFrame" Name = "itgfish.frame2" ><children>
+			<Layer File = "assets/eel.txt" Vert = "assets/fish.vert" Name = "itgfish.model"/>
 		</children></Layer>
 	</children></Layer>
+	
+	<Layer Type = "ActorFrame" Name = "drop3.ppframe" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer Type = "ActorProxy" Name = "PP_D3[1]"/>
+		<Layer Type = "ActorProxy" Name = "PP_D3[2]"/>
+	</children></Layer>
+	
 	
 	<Layer Type = "ActorFrame" Name = "drop4.ppframe"><children>
 		<Layer Type = "ActorProxy" Name = "PP_D4[1]"/>
@@ -35,15 +41,15 @@
 		<Layer Type = "ActorProxy" Name = "PP_D4plus"/>
 	</children></Layer>
 	
-	<Layer Type = "ActorFrame" Name = "endingaf" OnCommand="%function(self) self:hidden(1)end" ><children>
-		<Layer File = "assets/gameoverbg" Name = "finbg"/>
-		<Layer File = "assets/eel.txt" Name = "endfish"/>
-		<Layer File = "assets/endtext" Name = "endtext"/>
-		<Layer Type = "Quad" Name = "endquad"/>
+	<Layer Type = "ActorFrame" Name = "ending.frame" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer File = "assets/gameoverbg" Name = "ending.bg"/>
+		<Layer File = "assets/eel.txt" Name = "ending.model"/>
+		<Layer File = "assets/endtext" Name = "ending.text"/>
+		<Layer Type = "Quad" Name = "ending.quad"/>
 	</children></Layer>
 	
-	<Layer Type = "ActorFrame" Name = "textaf" OnCommand="%function(self) self:hidden(1) end" ><children>
-		<Layer Frag="assets/shaders/matcap.frag" File = "assets/nitgfan/text.obj" Name = "textobj"/>
+	<Layer Type = "ActorFrame" Name = "text.frame" OnCommand="%function(self) self:hidden(1) end" ><children>
+		<Layer Frag="assets/shaders/matcap.frag" File = "assets/nitgfan/text.obj" Name = "text.model"/>
 	</children></Layer>
 	
 	<Layer Type = "ActorProxy" Name = "PC[1]" />

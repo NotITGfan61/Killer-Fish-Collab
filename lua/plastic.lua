@@ -22,9 +22,9 @@
 	func{568, function()
 		under.frame:hidden(0)
 		
-		itgfishaf:hidden(0)
-		modelzoom(itgfish, 8)
-		itgfishaf:z(-128)
+		itgfish.frame:hidden(0)
+		modelzoom(itgfish.model, 8)
+		itgfish.frame:z(-128)
 
 		for pn = 1, 2 do
 			PP[pn]:hidden(1)
@@ -127,7 +127,7 @@
 		poptions[1]['drop4rotz'] = 30*sinBeat*amt
 		poptions[1]['itgfishrotz'] = 30*sinBeat*amt
 		
-		itgfish:x( -96*sinBeat*amt )
+		itgfish.model:x( -96*sinBeat*amt )
 	end}
 	
 	add{596-2, 4, inOutCubic, 360, 'waterrotz', plr = 1}
@@ -145,7 +145,7 @@
 		poptions[1]['drop4rotz'] = 45*sinBeat*amt
 		poptions[1]['itgfishrotz'] = 45*sinBeat*amt
 		
-		itgfish:x( -96*sinBeat*amt )
+		itgfish.model:x( -96*sinBeat*amt )
 	end}
 	
 	--accents
@@ -199,14 +199,14 @@
 	--final transition
 	add{624, 8, inCubic, -25, 'waterposz', 1, 'itgfishamp', 0.02, 'itgfishspeed', plr = 1}
 	
-	func_ease{624, 8, inCubic, -128, 64, 'itgfishaf:z', plr = 1}
+	func_ease{624, 8, inCubic, -128, 64, 'itgfish.frame:z', plr = 1}
 	
 	--hiding stuffs
 	func{632, function()
 		drop4.ppframe:hidden(1)
-		itgfishaf:hidden(1)
-		modelzoom(itgfish, 0)
-		itgfishaf:z(0)
+		itgfish.frame:hidden(1)
+		modelzoom(itgfish.model, 0)
+		itgfish.frame:z(0)
 		
 		for pn = 1, 2 do
 			PP[pn]:hidden(0)

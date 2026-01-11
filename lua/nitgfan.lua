@@ -214,14 +214,14 @@ local function womp(beat)
 end
 
 ----------------- Intro Setup --------------------------------------
-AfSetup(itgaf,90)
+AfSetup(itg.frame,90)
 set{0,-50,'squarezperiod',100,'middle',0,'zoom',10000,'drunkzspeed',10000,'drunkspeed',1000,'drunkspacing'}
 
 func {0, function()
-	itg:zoom(0)
+	itg.bg:zoom(0)
 end}
 
-func_ease {3.5, 1, ExpoS, 0, 1, 'itg:zoom'}
+func_ease {3.5, 1, ExpoS, 0, 1, 'itg.bg:zoom'}
 ease2{4,1,ExpoS,100,'zoom'}
 
 
@@ -229,8 +229,8 @@ local f = 1
 for i = 4,51 do
 	kick(i,0.25,0.5,'Expo','Expo',0,300*f,'squarez')
 	kick(i,0.25,0.5,'Expo','Expo',0,-100,'tiny')
-	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg:z'}
-	func_ease {i, 0.5, ExpoO, 25, 0, 'itg:z'}
+	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg.bg:z'}
+	func_ease {i, 0.5, ExpoO, 25, 0, 'itg.bg:z'}
 f = f * -1
 end
 
@@ -267,8 +267,8 @@ for i=1,table.getn(introspin) do
 	local beat = introspin[i][1]
 	ease{beat,1,flip(ExpoO),-300,'cooltiny'}
 	ease{beat,1,flip(ExpoO),50,'drunk'}
-	func_ease {beat, 2, popElastic:params(1,25), 3, 'itg:x'}
-	func_ease {beat, 1, ExpoO, 0, -25, 'itg:z2'}
+	func_ease {beat, 2, popElastic:params(1,25), 3, 'itg.bg:x'}
+	func_ease {beat, 1, ExpoO, 0, -25, 'itg.bg:z2'}
 	
 f = f*-1
 end
@@ -278,7 +278,7 @@ womp(44)
 
 
 ease{36,24,QuartI,0,'zoom',200,'zoomz',45,'coolrotationx'}
-func_ease{36, 24, QuartI, 1, 0, 'itg:zoom2'}
+func_ease{36, 24, QuartI, 1, 0, 'itg.bg:zoom2'}
 
 add{52,6,CubicI,360*4,'coolrotationy'}
 add{58,2,linear,360*6,'coolrotationy'}
@@ -288,72 +288,103 @@ set{64,0,'coolrotationy'}
 
 
 func {60, function()
-	itgaf:hidden(1)
+	itg.frame:hidden(1)
 end}
 
 
 
 
 ---------------------- FIGHT ME OR DIE ------------------------------
-AfSetup(textaf,90)
+AfSetup(text.frame,90)
 
-textobj:GetShader():uniformTexture('matcapTexture',texttex:GetTexture())
+text.model:GetShader():uniformTexture('matcapTexture',tex_textmatcap:GetTexture())
 
 --modelzoom(textobj,1.25)
 
-textobj:y(sh/8)
+text.model:y(sh/8)
 
 perframe{192,6,function(beat,poptions)
 	local sin = math.sin(beat*math.pi*0.25)
 	local cos = math.cos(beat*math.pi*0.25)
-	textobj:rotationx(-5*sin)
+	text.model:rotationx(-5*sin)
 end}
 
 func {192, function()
-	textaf:hidden(0)
+	text.frame:hidden(0)
 end}
 
 
 func {197, function()
-	textaf:hidden(1)
+	text.frame:hidden(1)
 end}
 
 
 func_ease {192, 3, WiggleO, 0, 1.25, function(p)
-	modelzoom(textobj,p)
+	modelzoom(text.model,p)
 end}
 
-func_ease {196-1.5, 3, SmoothS, 0, 360, 'textobj:z'}
+func_ease {196-1.5, 3, SmoothS, 0, 360, 'text.model:z'}
+
+
+---------------------- Drop 3 Setup --------------------------------
+
+AfSetup(drop3.ppframe,90)
+
+for pn = 1, 2 do
+	PP_D3[pn]:SetTarget(P[pn]:GetChild('NoteField'))
+end
+
+func {504, function()
+	for pn = 1,2 do
+		drop3.ppframe:hidden(0)
+		PP[pn]:hidden(1)
+	end
+end}
+
+
+
+
+
+
+
+
+
+
+func {568, function()
+	for pn = 1,2 do
+		drop3.ppframe:hidden(1)
+	end
+end}
 
 ---------------------- Outro Setup --------------------------------
-AfSetup(itgfishaf,90)
+AfSetup(itgfish.frame,90)
 
-modelzoom(itgfish,0)
-itgfish:rotationy(-90)
+modelzoom(itgfish.model,0)
+itgfish.model:rotationy(-90)
 
 definemod{'itgfishamp', 'itgfishperiod', 'itgfishspeed', function(amp, per, spd)
-	itgfish:GetShader():uniform1f('amp', amp)
-	itgfish:GetShader():uniform1f('per', per)
-	itgfish:GetShader():uniform1f('spd', spd)
+	itgfish.model:GetShader():uniform1f('amp', amp)
+	itgfish.model:GetShader():uniform1f('per', per)
+	itgfish.model:GetShader():uniform1f('spd', spd)
 end}
 
 definemod{'itgfishrotx', 'itgfishroty', 'itgfishrotz', 'itgfishrotz2', function(rx, ry, rz,rz2)
-	itgfishaf2:rotationx(rx):rotationy(ry):rotationz(rz+rz2)
+	itgfish.frame2:rotationx(rx):rotationy(ry):rotationz(rz+rz2)
 end}
 
 set{668,2,'itgfishamp',30,'itgfishperiod',0.5,'itgfishspeed'}
 
 
 definemod {'itgz2', function(p)
-    itg:z2(p)
+    itg.bg:z2(p)
 end}
 
 func {636, function()
 	above.frame:hidden(1)
-	itgaf:hidden(0)
-	itg:zoom(1)
-	itg:zoom2(1)
-	itg:z2(0)
+	itg.frame:hidden(0)
+	itg.bg:zoom(1)
+	itg.bg:zoom2(1)
+	itg.bg:z2(0)
 end}
 
 ease{636,16,linear,100,'hidden'}
@@ -369,12 +400,12 @@ local f = 1
 for i = 636,691 do
 	kick(i,0.25,0.5,'Expo','Expo',0,300*f,'squarez')
 	kick(i,0.25,0.5,'Expo','Expo',0,-100,'tiny')
-	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg:z'}
-	func_ease {i, 0.5, ExpoO, 25, 0, 'itg:z'}
+	func_ease {i-0.25, 0.25, ExpoI, 0, 25, 'itg.bg:z'}
+	func_ease {i, 0.5, ExpoO, 25, 0, 'itg.bg:z'}
 f = f * -1
 end
 
-func_ease{636, 32, linear, 100, 0, 'itg:z2'}
+func_ease{636, 32, linear, 100, 0, 'itg.bg:z2'}
 ease{636,32,flip(linear),100,'z'}
 
 add2{668,4,inverseExpo,-500,'z'}
@@ -405,57 +436,57 @@ f = f*-1
 end
 
 func {668, function()
-	itgfishaf:hidden(0)
+	itgfish.frame:hidden(0)
 end}
 
 add{697,4,SineS,360*3,'itgfishrotz2'}
 
-func_ease{691, 2, WiggleS, 0, -200, 'itgfishaf2:z'}
+func_ease{691, 2, WiggleS, 0, -200, 'itgfish.frame2:z'}
 
 func_ease {685.5-1, 2, ExpoS, 0, 8, function(p)
-	modelzoom(itgfish,p)
+	modelzoom(itgfish.model,p)
 end}
 
-func_ease{696, 4, WiggleI, -200, 400, 'itgfishaf2:z'}
+func_ease{696, 4, WiggleI, -200, 400, 'itgfish.frame2:z'}
 
 
 ---------------------- Fin Setup ---------------------------------
-AfSetup(endingaf,90)
-finbg:zoomto(sw/1.5,sh/1.5)
+AfSetup(ending.frame,90)
+ending.bg:zoomto(sw/1.5,sh/1.5)
 
-ModelSetup(endfish,5)
-endfish:y(sh/16)
-endfish:rotationx(-25)
-endfish:rotationz(-25)
+ModelSetup(ending.model,5)
+ending.model:y(sh/16)
+ending.model:rotationx(-25)
+ending.model:rotationz(-25)
 
-endquad:zoomto(sw,sh)
-endquad:diffuse(0,0,0,0)
+ending.quad:zoomto(sw,sh)
+ending.quad:diffuse(0,0,0,0)
 
-endtext:zoomto(sw/2,sh/2)
-endtext:y(-sh/4)
+ending.text:zoomto(sw/2,sh/2)
+ending.text:y(-sh/4)
 
-endfish:hidden(1)
-endquad:hidden(1)
-endtext:hidden(1)
-finbg:hidden(1)
+ending.model:hidden(1)
+ending.quad:hidden(1)
+ending.text:hidden(1)
+ending.bg:hidden(1)
 
 set{700,100,'hide'}
 
 func {700, function()
-	itgaf:hidden(1)
-	itgfishaf:hidden(1)
-	endingaf:hidden(0)
+	itg.frame:hidden(1)
+	itgfish.frame:hidden(1)
+	ending.frame:hidden(0)
 end}
 
 func {701.5, function()
-	endfish:hidden(0)
+	ending.model:hidden(0)
 	endquad:hidden(0)
-	endtext:hidden(0)
-	finbg:hidden(0)
+	ending.text:hidden(0)
+	ending.bg:hidden(0)
 end}
 
 
-func_ease {701.5, 16, outExpo, 360, 0, 'endingaf:z'}
-func_ease {701.5, 16, outExpo, 1, 0, 'endquad:diffusealpha'}
+func_ease {701.5, 16, outExpo, 360, 0, 'ending.frame:z'}
+func_ease {701.5, 16, outExpo, 1, 0, 'ending.quad:diffusealpha'}
 
-func_ease {717-1, 2, ExpoS, 0, 1, 'endquad:diffusealpha'}
+func_ease {717-1, 2, ExpoS, 0, 1, 'ending.quad:diffusealpha'}
