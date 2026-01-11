@@ -70,11 +70,17 @@ local sky_size = 4096*20
 tex_sky:hidden(1)
 	
 above.sky:y(768)
-above.sky:rotationy(90)
 above.sky:zoom( sky_size/640 ):zoomz( sky_size/640 )
 above.sky:cullmode('front')
 above.sky:SetTexture(0, tex_sky:GetTexture())
-	
+
+perframe{0, 790, function(beat)
+	local spd = 0.2
+	local ry = (beat * spd) % 360
+
+	above.sky:rotationy(ry)
+end}
+
 above.ocean:xy(0, 768)
 above.ocean:SetWidth(sky_size*2)
 above.ocean:SetHeight(sky_size*2)
@@ -108,6 +114,11 @@ under.water:zoomto(sw,-sh)
 under.rays:xy(0, 0)
 under.rays:zoomto(sw, sh)
 
+under.aft:hidden(1)
+under.aftsp:SetTexture(under.aft:GetTexture())
+under.aftsp:zoom(1.01)
+under.aftsp:hidden(1)
+
 --spell casting animation stuffs
 casting.frame:xy(scx, scy)
 casting.frame:hidden(1)
@@ -115,6 +126,19 @@ casting.frame:hidden(1)
 casting.spellcirc:zoom(0.5)
 
 ----------------------------------------------------------------------------------------------DEFINEMOD STUFF GOES HERE----------------------------------------------------------------------------------------------------------------------
+
+--above.ocean definemods
+definemod{'aboverotx', 'aboveroty', 'aboverotz', function(rx, ry, rz)
+	above.frame:rotationxyz(rx, ry, rz)
+end}
+
+definemod{'abovexpos', 'aboveypos', 'abovezpos', function(xp, yp, zp)
+	above.frame:xyz(scx + xp, scy + yp, zp)
+end}
+
+definemod{'oceanspdx', 'oceanspdy', function(sx, sy)
+	above.ocean:texcoordvelocity(sx, sy)
+end}
 
 --underwater bg definemods
 definemod {'waterfov', 'waterheight', function(fov, ht)

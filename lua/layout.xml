@@ -59,4 +59,7 @@
 	<Layer Type = "ActorProxy" Name = "PP[1]" />
 	<Layer Type = "ActorProxy" Name = "PP[2]" />
 
+	<Layer Type = "ActorFrameTexture" Name = "under.aft" InitCommand = "%xero.aft"/>
+	<Layer Type = "Sprite" Frag = "assets/plastic/shaders/waterwibble.frag" Name = "under.aftsp" InitCommand = "%xero.sprite"/>
+
 </children></Layer>

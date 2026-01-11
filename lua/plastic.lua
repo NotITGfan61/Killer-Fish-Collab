@@ -1,4 +1,33 @@
 --code goes here here :)
+--??. Drop 2???
+	--trying out the transition
+	ease{272, 4, inExpo, 25, 'aboverotx', plr = 1}
+	ease{274, 2, inExpo, -400, 'aboveypos', plr = 1}
+
+	set{272, 0.75, 'oceanspdy', plr = 1}
+
+	--phase 2 in underwater!!
+	func{276, function()
+		under.frame:hidden(0)
+		under.aft:hidden(0)
+		under.aftsp:hidden(0)
+	end, persist=true}
+	
+	set{276, 2, 'waterheight', 25, 'waterrotx', plr = 1}
+	
+	add{276, 64, linear, -100, 'waterposz', plr = 1}
+	ease{276, 4, outCubic, 7, 'waterheight', 0, 'waterrotx', plr = 1}
+
+	reset{276, exclude={'waterheight', 'waterposz', 'waterrotx'}}
+	
+	--resetting stuffs for nitgfan
+	func{340, function()
+		under.frame:hidden(1)
+		under.aft:hidden(1)
+		under.aftsp:hidden(1)
+	end, persist=true}
+	reset{340}
+	
 --??. Drop 4 : Arrow Torpedo
 	--ActorProxies for this section
 	drop4.ppframe:xy(scx, scy)
@@ -21,6 +50,8 @@
 	--happens at underwater??
 	func{568, function()
 		under.frame:hidden(0)
+		under.aft:hidden(0)
+		under.aftsp:hidden(0)
 		
 		itgfish.frame:hidden(0)
 		modelzoom(itgfish.model, 8)
@@ -35,6 +66,8 @@
 	
 	func{632, function()
 		under.frame:hidden(1)
+		under.aft:hidden(1)
+		under.aftsp:hidden(1)
 	end, persist=true}
 	
 	--player hidden stuffs
@@ -171,7 +204,9 @@
 		ease{i, 1, flip(outCubic), 50, 'stealth', 100*fluct, 'drunkz', plr = 3}
 		ease{i, 2, flip(outCubic), -100, 'tiny', plr = 3}
 		
-		ease{i, 2, flip(outCubic), 80, 'itgfishperiod', plr = 1}
+		for c = 0, 3 do
+			ease{i, 2, flip(outCubic), 400, 'bumpyx'..c, 400, 'bumpyz'..c, plr = 3}
+		end
 		
 		fluct = fluct * -1
 	end
