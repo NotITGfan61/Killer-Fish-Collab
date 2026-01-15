@@ -30,10 +30,32 @@
 	</children></Layer>
 	
 	<Layer Type = "ActorFrame" Name = "drop3.ppframe" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer File = "assets/nitgfan/itgb" Name = "drop3.bg"/>
 		<Layer Type = "ActorProxy" Name = "PP_D3[1]"/>
 		<Layer Type = "ActorProxy" Name = "PP_D3[2]"/>
+		<Layer Type = "ActorFrameTexture" Name = "drop3kecak.aft[1]" InitCommand = "%xero.aft"/>
+		<Layer Type = "ActorFrameTexture" Name = "drop3kecak.aft[2]" InitCommand = "%xero.aft"/>
+		<Layer Type = "ActorFrameTexture" Name = "drop3kecak.aft[3]" InitCommand = "%xero.aft"/>
+		<Layer Type = "ActorFrameTexture" Name = "drop3kecak.aft[4]" InitCommand = "%xero.aft"/>
+		<Layer Type = "Quad" Name = "drop3.hidequad"/>
 	</children></Layer>
 	
+	<Layer Type = "Sprite"  Name = "drop3fade.sprite" InitCommand = "%xero.sprite" OnCommand="%function(self) self:hidden(1)end"/>
+	
+	<Layer Type = "ActorFrame" Name = "drop3kecak.frame" OnCommand="%function(self) self:hidden(1)end" ><children>
+		<Layer Type = "Sprite" Name = "drop3kecak.sprite[1]" InitCommand = "%xero.sprite"/>
+		<Layer Type = "Sprite" Name = "drop3kecak.sprite[2]" InitCommand = "%xero.sprite"/>
+		<Layer Type = "Sprite" Name = "drop3kecak.sprite[3]" InitCommand = "%xero.sprite"/>
+		<Layer Type = "Sprite" Name = "drop3kecak.sprite[4]" InitCommand = "%xero.sprite"/>
+	</children></Layer>
+	
+	<Layer Type = "ActorFrameTexture" Name = "drop3fade.aft" InitCommand = "%xero.aft" OnCommand="%function(self) self:hidden(1)end"/>
+	
+	<Layer Type = "ActorFrameTexture" Name = "drop3scroll.aft" InitCommand = "%xero.aft"/>
+	<Layer Type = "Sprite"  Frag = "assets/shaders/scroll.frag" Name = "drop3scroll.sprite" InitCommand = "%xero.sprite"/>
+	
+	<Layer Type = "ActorFrameTexture" Name = "drop3glitch.aft" InitCommand = "%xero.aft"/>
+	<Layer Type = "Sprite"  Frag = "assets/shaders/horizon.frag" Name = "drop3glitch.sprite" InitCommand = "%xero.sprite"/>
 	
 	<Layer Type = "ActorFrame" Name = "drop4.ppframe"><children>
 		<Layer Type = "ActorProxy" Name = "PP_D4[1]"/>

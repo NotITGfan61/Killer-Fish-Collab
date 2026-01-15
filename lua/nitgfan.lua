@@ -329,31 +329,299 @@ func_ease {196-1.5, 3, SmoothS, 0, 360, 'text.model:z'}
 ---------------------- Drop 3 Setup --------------------------------
 
 AfSetup(drop3.ppframe,90)
+AfSetup(drop3kecak.frame,70)
+
+drop3.bg:zoomto(sw,sh)
+
+drop3.hidequad:zoomto(sw,sh)
+drop3.hidequad:diffuse(0,0,0,1)
+
+LimitAft(drop3fade.aft)
+drop3fade.sprite:zoom(1.01)
+drop3fade.sprite:zoomx(1.025)
+drop3fade.sprite:diffusealpha(0.95)
+drop3fade.sprite:rotationy(10)
+
+shader(drop3fade.sprite,drop3fade.aft)
+drop3fade.sprite:blend('add')
+
+shader(drop3scroll.sprite,drop3scroll.aft)
+
+shader(drop3glitch.sprite,drop3glitch.aft)
 
 for pn = 1, 2 do
 	PP_D3[pn]:SetTarget(P[pn]:GetChild('NoteField'))
 end
 
+for i = 1,#drop3kecak.sprite do
+	shader(drop3kecak.sprite[i],drop3kecak.aft[i])
+	drop3kecak.sprite[i]:xy(0,0)
+end
+
+drop3kecak.sprite[1]:croptop(0.5):cropright(0.5):cropleft(0.0125) --top left
+drop3kecak.sprite[2]:croptop(0.5):cropleft(0.5):cropright(0.0125) --top right
+drop3kecak.sprite[3]:cropbottom(0.5):cropright(0.5):cropleft(0.0125) --bottom left
+drop3kecak.sprite[4]:cropbottom(0.5):cropleft(0.5):cropright(0.0125) --bottom right
+
+local function kecakfreeze(beat,which)
+	if which == 'top' then
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(1)
+			drop3kecak.aft[2]:hidden(1)
+			drop3kecak.aft[3]:hidden(0)
+			drop3kecak.aft[4]:hidden(0)
+		end}
+		
+	elseif which == 'bottom' then	
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(0)
+			drop3kecak.aft[2]:hidden(0)
+			drop3kecak.aft[3]:hidden(1)
+			drop3kecak.aft[4]:hidden(1)
+		end}
+		
+	elseif which == 'left' then	
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(1)
+			drop3kecak.aft[2]:hidden(0)
+			drop3kecak.aft[3]:hidden(1)
+			drop3kecak.aft[4]:hidden(0)
+		end}
+		
+	elseif which == 'right' then	
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(0)
+			drop3kecak.aft[2]:hidden(1)
+			drop3kecak.aft[3]:hidden(0)
+			drop3kecak.aft[4]:hidden(1)
+		end}
+	elseif which == 'none' then	
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(0)
+			drop3kecak.aft[2]:hidden(0)
+			drop3kecak.aft[3]:hidden(0)
+			drop3kecak.aft[4]:hidden(0)
+		end}
+	elseif which == 'all' then	
+		func {beat, function()
+			drop3kecak.aft[1]:hidden(1)
+			drop3kecak.aft[2]:hidden(1)
+			drop3kecak.aft[3]:hidden(1)
+			drop3kecak.aft[4]:hidden(1)
+		end}
+	end
+	
+end
+
+
+definemod{'kecaktopx','kecaktopy','kecaktopz','kecakbottomx','kecakbottomy','kecakbottomz','kecakleftx','kecaklefty','kecakleftz','kecakrightx','kecakrighty','kecakrightz', function(tx,ty,tz,bx,by,bz,lx,ly,lz,rx,ry,rz)
+	drop3kecak.sprite[1]:xyz(tx+lx,ty+ly,tz+lz)
+	drop3kecak.sprite[2]:xyz(tx+rx,ty+ry,tz+rz)
+	drop3kecak.sprite[3]:xyz(bx+lx,by+ly,bz+lz)
+	drop3kecak.sprite[4]:xyz(bx+rx,by+ry,bz+rz)
+end}
+
 func {504, function()
 	for pn = 1,2 do
 		drop3.ppframe:hidden(0)
+		drop3kecak.frame:hidden(0)
 		PP[pn]:hidden(1)
+		drop3fade.sprite:hidden(0)
+		drop3fade.aft:hidden(0)
 	end
+end}
+
+func_ease {504, 4, WiggleO, 1, 0.8, function(p)
+	drop3kecak.frame:zoom(p)
+end}
+
+set{504,500,'zoomz'}
+
+for i = 508,534 do
+	ease{i,2,popElastic:params(1,25),100,'bumpy'}
+end
+
+
+for i = 508,508+4,2 do
+	ease{i,1,bounce,-50,'kecaktopy',100,'brake'}
+	ease{i,2,popElastic:params(1,25),-150,'kecaktopx'}
+	kecakfreeze(i,'bottom')
+	
+	ease{i+1,1,bounce,50,'kecakbottomy',100,'wave'}
+	ease{i+1,2,popElastic:params(1,25),-150,'kecakbottomx'}
+	kecakfreeze(i+1,'top')
+end
+
+ease{514,1,bounce,-50,'kecaktopy',100,'brake'}
+ease{514,2,popElastic:params(1,25),-150,'kecaktopx'}
+kecakfreeze(514,'bottom')
+
+ease{515,1,bounce,-100,'kecakleftx',100,'brake'}
+ease{515,2,popElastic:params(1,25),-50,'kecaklefty'}
+kecakfreeze(515,'none')
+
+for i = 516,516+4,2 do
+	ease{i,1,bounce,50,'kecakbottomy',100,'wave'}
+	ease{i,2,popElastic:params(1,25),-150,'kecakbottomx'}
+	kecakfreeze(i,'top')
+	
+	ease{i+1,1,bounce,-50,'kecaktopy',100,'brake'}
+	ease{i+1,2,popElastic:params(1,25),-150,'kecaktopx'}
+	kecakfreeze(i+1,'bottom')
+end
+
+ease{522,1,bounce,100,'kecakrightx'}
+ease{522,2,popElastic:params(1,25),-150,'kecakrighty'}
+kecakfreeze(522,'none')
+
+ease{523,1,bounce,-100,'kecakleftx'}
+ease{523,2,popElastic:params(1,25),-150,'kecaklefty'}
+
+ease{522,2,bounce,150,'zoom',100,'brake'}
+
+for i = 524,524+10,2 do
+	ease{i,1,bounce,-50,'kecaktopy',100,'brake'}
+	ease{i,2,popElastic:params(1,25),-150,'kecaktopx'}
+	kecakfreeze(i,'bottom')
+	ease{i+0.5,0.5,bounce,100,'kecaktopz'}
+	
+	ease{i+1,1,bounce,50,'kecakbottomy',100,'wave'}
+	ease{i+1,2,popElastic:params(1,25),-150,'kecakbottomx'}
+	kecakfreeze(i+1,'top')
+	ease{i+1.5,0.5,bounce,100,'kecakbottomz'}
+end
+
+local kecak_wave
+
+definemod {'kecakwave', function(percent)
+    kecak_wave = percent
+end}
+
+perframe{504,536-508,function(beat,poptions)
+	local sin = math.sin(beat*math.pi*0.25)
+	local cos = math.cos(beat*math.pi*0.25)
+	local sin2 = math.sin(beat*math.pi*0.125)
+	local cos2 = math.cos(beat*math.pi*0.125)
+	
+	drop3kecak.frame:rotationy(kecak_wave*3*sin2)
+	drop3kecak.frame:rotationz(-kecak_wave*sin2)
+	drop3kecak.frame:rotationx(kecak_wave*2*cos2)
+end}
+
+ease{508,1,ExpoO,-5,'kecakwave'}
+
+
+func_ease {508, 28, SineS, 0, 2, function(p)
+	drop3scroll.sprite:GetShader():uniform1f('scrolly', p)
+end}
+
+func {536, function()
+	drop3kecak.frame:rotationy(0)
+	drop3kecak.frame:rotationz(0)
+	drop3kecak.frame:rotationx(0)
+end}
+
+kecakfreeze(536,'none')
+
+
+func_ease {536-1.5, 3, inverseExpo, 0, -2000, function(p) drop3kecak.frame:z2(p) end}
+
+
+func_ease {540, 8, CubicS, 0, -2, function(p)
+	drop3scroll.sprite:GetShader():uniform1f('scrollx', p)
+end}
+
+func_ease {548, 8, CubicS, 0, 2, function(p)
+	drop3scroll.sprite:GetShader():uniform1f('scrollx', p)
 end}
 
 
 
 
+func_ease {540, 16, linear, 0, 5, function(p)
+	drop3glitch.sprite:GetShader():uniform1f('timer', p)
+end}
+
+
+
+for i = 540,552,2 do
+	ease{i,1,bounce,-50,'kecaktopy',50,'brake'}
+	ease{i,2,popElastic:params(1,25),-150,'kecaktopx'}
+	kecakfreeze(i,'bottom')
+	
+	ease{i+1,1,bounce,50,'kecakbottomy',50,'wave'}
+	ease{i+1,2,popElastic:params(1,25),-150,'kecakbottomx'}
+	kecakfreeze(i+1,'top')
+end
+
+kecakfreeze(554,'none')
+
+func_ease {554-2, 4, inverseExpo, 0, 2000, function(p) drop3kecak.frame:y2(p) end}
+
+func {554, function()
+	drop3kecak.frame:rotationy(0)
+	drop3kecak.frame:rotationz(0)
+	drop3kecak.frame:rotationx(0)
+end}
+
+
+for i = 540,553 do
+	--func_ease {i, 1, bounce, 0, -200, function(p) drop3kecak.frame:z2(p) end}
+end
+
+for i = 556,567 do
+	ease2{i,4,inverseExpo,-1000,'kecaktopz',-1000,'kecakbottomz'}
+	ease{i,1,bounce,-50,'kecaktopy',50,'brake',50,'kecakbottomy'}
+end
+
+func_ease {556, 12, CubicI, 0, -5, function(p)
+	drop3scroll.sprite:GetShader():uniform1f('scrolly', p)
+end}
 
 
 
 
+func_ease {540, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {541, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {542, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {545, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {546, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+
+func_ease {548, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {549, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {550, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+
+func_ease {552, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+func_ease {553, 2, ExpoO, 0.15, 0, function(p) drop3glitch.sprite:GetShader():uniform1f('glitch', p) end}
+
+
+perframe{540,554-540,function(beat,poptions)
+	local sin = math.sin(beat*math.pi*0.25)
+	local cos = math.cos(beat*math.pi*0.25)
+	local sin2 = math.sin(beat*math.pi*0.125)
+	local cos2 = math.cos(beat*math.pi*0.125)
+	
+	drop3kecak.frame:rotationy(-kecak_wave*3*sin2)
+	drop3kecak.frame:rotationz(kecak_wave*sin2)
+	drop3kecak.frame:rotationx(-kecak_wave*2*cos2)
+	--drop3kecak.frame:z2(-100*sin2)
+	--drop3kecak.frame:z2(-100*sin2)
+	
+end}
+
+
+set{568,100,'zoomz'}
 
 
 func {568, function()
-	for pn = 1,2 do
-		drop3.ppframe:hidden(1)
-	end
+	drop3.ppframe:hidden(1)
+	drop3kecak.frame:hidden(1)
+	drop3fade.sprite:hidden(1)
+	drop3fade.aft:hidden(1)
+	drop3glitch.aft:hidden(1)
+	drop3glitch.sprite:hidden(1)
+	drop3scroll.aft:hidden(1)
+	drop3scroll.sprite:hidden(1)
 end}
 
 ---------------------- Outro Setup --------------------------------
