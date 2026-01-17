@@ -1,5 +1,16 @@
 --code goes here here :)
 --??. Drop 2???
+	--ActorProxies for this section
+	drop2.ppframe:xy(scx, scy)
+	drop2.ppframe:fov(RealFov(90))
+	drop2.ppframe:SetFarDist(9E9)
+	drop2.ppframe:zbuffer(1)
+	drop2.ppframe:hidden(1)
+	
+	for pn = 1, 2 do
+		PP_D2[pn]:SetTarget(P[pn]:GetChild('NoteField'))
+	end
+
 	--trying out the transition
 	ease{272, 4, inExpo, 25, 'aboverotx', plr = 1}
 	ease{274, 2, inExpo, -400, 'aboveypos', plr = 1}
@@ -11,22 +22,314 @@
 		under.frame:hidden(0)
 		under.aft:hidden(0)
 		under.aftsp:hidden(0)
+		
+		itgfish.frame:hidden(0)
+		modelzoom(itgfish.model, 8)
+		itgfish.frame:z(-128)
+		
+		for pn = 1, 2 do
+			PP[pn]:hidden(1)
+		end
+		drop2.ppframe:hidden(0)
+		
 	end, persist=true}
+	set{276, 2,'itgfishamp', 60,'itgfishperiod', 1,'itgfishspeed', plr = 1}
 	
 	set{276, 2, 'waterheight', 25, 'waterrotx', plr = 1}
 	
 	add{276, 64, linear, -100, 'waterposz', plr = 1}
 	ease{276, 4, outCubic, 7, 'waterheight', 0, 'waterrotx', plr = 1}
-
+	
 	reset{276, exclude={'waterheight', 'waterposz', 'waterrotx'}}
+	
+	--fish spellcard attack
+	func{277, function()
+		casting.frame:hidden(0)
+	end, persist=true}
+	
+	--castSound(570)
+	castSound(277)
+	
+	set{277, 40, 'spellcirczoom', plr = 1}
+	
+	ease{277, 6, inOutSine, 360, 'spellcircrotz', plr = 1}
+	
+	ease{277, 1, inOutCubic, 100, 'spellcircalpha', plr = 1}
+	ease{282, 1, inOutCubic,   0, 'spellcircalpha', plr = 1}
+
+	func{283, function()
+		casting.frame:hidden(1)
+	end, persist=true}
+	
+	--drop 2 mods
+	set{276, 3, 'xmod', 50, 'flip', 90, 'coolrotationx', 200, 'zoomz', 100, 'wave', 60, 'brake', 100, 'orient'}
+	set{276, 50, 'drawsize', 100, 'sudden',  200, 'suddenoffset', -10, 'shrinklinear', -10, 'shrinklinearz'}
+	for c = 0, 3 do
+		set{276, 1000, 'bumpyxperiod'..c, 1000, 'bumpyzperiod'..c}
+	end
+	set{276, 0, 'tornadoperiod', 0, 'tornadozperiod', 100, 'dark', 100, 'hidenoteflashes'}
+	
+	definemod{'d2circsize', 'd2circoffset', function(sz, off)
+		d2_circsize = sz/64 * 100
+		d2_circoff = off * math.pi/180
+	end}
+	
+	set{276, 160, 'd2circsize', plr = 1}
+	
+	perframe{276, 20, function(beat, poptions)
+		for pn = 1, 2 do
+			poptions[pn].tornado  = 25 * math.cos( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 + ((beat-276)/8) ) + d2_circoff )
+			poptions[pn].tornadoz = 25 * math.sin( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 + ((beat-276)/8) ) + d2_circoff )
+		
+			for c = 0, 3 do
+				local ang = 2*math.pi * ( ( 4*(pn-1)+c )/8 + ((beat-276)/8) ) + d2_circoff
+			
+				poptions[pn]['movex'..c] = d2_circsize * math.cos( ang )
+				poptions[pn]['movez'..c] = d2_circsize * math.sin( ang )
+				
+				poptions[pn]['bumpyx'..c] = -225 * math.cos( ang )
+				poptions[pn]['bumpyz'..c] = -225 * math.sin( ang )
+			end
+		end
+	end}
+	
+	func{296, function()
+		for pn = 1, 2 do
+			PP_D2[pn]:hidden(1)
+		end
+	end, persist=true}
+	
+	func{308, function()
+		for pn = 1, 2 do
+			PP_D2[pn]:hidden(0)
+		end
+	end, persist=true}
+	
+	set{308, 0, 'd2circoffset', plr = 1}
+	perframe{308, 16, function(beat, poptions)
+		for pn = 1, 2 do
+			poptions[pn].tornado  = -25 * math.cos( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 - ((beat-308)/8) ) + d2_circoff )
+			poptions[pn].tornadoz = -25 * math.sin( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 - ((beat-308)/8) ) + d2_circoff )
+		
+			for c = 0, 3 do
+				local ang = 2*math.pi * ( ( 4*(pn-1)+c )/8 - ((beat-308)/8) ) + d2_circoff
+			
+				poptions[pn]['movex'..c] = d2_circsize * math.cos( ang )
+				poptions[pn]['movez'..c] = d2_circsize * math.sin( ang )
+				
+				poptions[pn]['bumpyx'..c] = -225 * math.cos( ang )
+				poptions[pn]['bumpyz'..c] = -225 * math.sin( ang )
+			end
+		end
+	end}
+	
+	--arpeggiooooooooooooo
+	set{276, 200, 'arrowpathgirth'}
+	
+	ease{277, 1, inOutCubic, 25, 'arrowpath'}
+	ease{278, 1, inOutCubic,  0, 'arrowpath'}
+	
+	local fluct = 1
+	for i = 280, 292, 1/6 do
+		ease{i, 1/6, flip(outSine), 25, 'stealth'}		
+		add{i, 0, instant, 360/32, 'd2circoffset', plr = 1}
+		
+		local c = math.floor( ((i-280)*6)%4 )
+		ease{i, 2/3, flip(outCubic), 50, 'arrowpath'..c}
+	end
+	
+	local fluct = 1
+	for i = 312, 324, 1/6 do
+		ease{i, 1/6, flip(outSine), 25, 'stealth'}		
+		add{i, 0, instant, -360/32, 'd2circoffset', plr = 1}
+		
+		local c = math.floor( ((324-i)*6)%4 )
+		ease{i, 2/3, flip(outCubic), 50, 'arrowpath'..c}
+	end
+	
+	--accents
+	set{276, -50, 'bumpyzperiod'}
+	
+	for i = 280, 292, 2 do
+		ease{i, 1, flip(outCubic), -200, 'tiny', -200, 'tinyz'}
+		if i % 4 > 1 then
+			ease{i, 1, flip(outCubic), 50, 'bumpyz'}
+		end
+	end
+	
+	for i = 312, 324, 2 do
+		ease{i, 1, flip(outCubic), -200, 'tiny', -200, 'tinyz'}
+		
+		if i % 4 > 1 then
+			ease{i, 1, flip(outCubic), 50, 'bumpyz'}
+		end
+	end
+	
+	--hide everything that's not roll
+	for pn = 1, 2 do
+		P[pn]:SetHiddenRegions( { { 292.5, 308 } } )
+	end
+	
+	--Playfield coming from sides
+	for pn = 3, 4 do
+		P[pn]:SetAwake(true)
+		P[pn]:SetInputPlayer(pn-3)
+	end
+	
+	for pn = 1, 2 do
+		PP_D2plus[pn]:SetTarget(P[pn+2]:GetChild('NoteField'))
+		PP_D2plus[pn]:hidden(1)
+	end
+	
+	func{288, function()
+		for pn = 1, 2 do
+			PP_D2plus[pn]:z(-256)
+			PP_D2plus[pn]:hidden(0)
+		end
+	end, persist=true}
+	
+	func{310, function()
+		for pn = 1, 2 do
+			PP_D2plus[pn]:hidden(1)
+		end
+	end, persist=true}
+	
+	definemod{'drop2orbitrad', 'drop2orbitangle', function(rd, ag, pn)
+		local xp = rd * math.cos(ag * math.pi/180)
+		local zp = rd * math.sin(ag * math.pi/180)
+		
+		return xp, zp
+	end, 'x', 'z'}
+	
+	set{272, 3*scx, 'drop2orbitrad', plr = {3,4}}
+	
+	ease{288, 4, inOutCubic,   256, 'drop2orbitrad', plr = {3,4}}
+	ease{306, 4, inOutCubic, 3*scx, 'drop2orbitrad', plr = {3,4}}
+	
+	function InLinOut(b, inInfo, l_lin, outInfo, amt, mod, pn)
+		local n_i, l_i =  inInfo[1],  inInfo[2]
+		local n_o, l_o = outInfo[1], outInfo[2]
+		
+		local coef_in, coef_out = l_i/l_lin/n_i, l_o/l_lin/n_o
+		
+		local amt_lin = amt / (coef_in + 1 + coef_out)
+		local amt_in, amt_out = amt_lin*coef_in, amt_lin*coef_out
+			
+		if n_i == 2 then
+			add{b          , l_i,  inQuad, amt_in , mod, plr = pn}
+		elseif n_i == 3 then
+			add{b          , l_i,  inCubic, amt_in , mod, plr = pn}
+		elseif n_i == 4 then
+			add{b          , l_i,  inQuart, amt_in , mod, plr = pn}
+		end
+		
+		add{b+l_i, l_lin, linear, amt_lin, mod, plr = pn}
+			
+		if n_o == 2 then
+			add{b+l_i+l_lin, l_o, outQuad, amt_out, mod, plr = pn}
+		elseif n_o == 3 then
+			add{b+l_i+l_lin, l_o, outCubic, amt_out, mod, plr = pn}
+		elseif n_o == 4 then
+			add{b+l_i+l_lin, l_o, outQuart, amt_out, mod, plr = pn}
+		end
+	end
+	
+	set{272,  180, 'drop2orbitangle', plr = 3}
+	set{272,    0, 'drop2orbitangle', plr = 4}
+	
+	InLinOut(288, {2, 2}, 14, {2, 2}, 180, 'drop2orbitangle', {3,4})
+	
+	for pn = 3, 4 do
+		ease{288, 2,  inCubic, -100, 'tinyx', 50*(2*pn-7), 'skewx', plr = pn}
+		ease{290, 2, outCubic,    0, 'tinyx', 0, 'skewx', plr = pn}
+		
+		ease{306, 2,  inCubic, -100, 'tinyx', 50*(7-2*pn), 'skewx', plr = pn}
+		ease{308, 2, outCubic,    0, 'tinyx', 0, 'skewx', plr = pn}
+		
+	end
+	
+	local fluct = 1
+	for i = 292, 306, 2 do
+		ease{i, 1, flip(outCubic), -150, 'tiny', -150, 'tinyz', plr = {3,4}}
+		
+		if i % 4 > 1 then
+			ease{i, 2, flip(outCubic), 200*fluct, 'tipsy', -628*fluct, 'confusionzoffset', plr = {3,4}}
+			add{i, 2, outCubic, 45, 'drop2orbitangle', plr = {3,4}}
+			
+			set{i, 50, 'stealth', plr = {3,4}}
+			ease{i, 1, outCubic, 40*(1+fluct), 'stealth', 50*(1+fluct), 'invert', plr = 3}
+			ease{i, 1, outCubic, 40*(1-fluct), 'stealth', 50*(1-fluct), 'invert', plr = 4}
+			
+			for c = 0, 3 do
+				local amt = -157/2
+				local dir = 1-2*(math.floor( (c+1)/2 )%2)
+				
+				ease{i, 1, outCubic, amt*dir*(1+fluct), 'confusionzoffset'..c, plr = 3}
+				ease{i, 1, outCubic, amt*dir*(1-fluct), 'confusionzoffset'..c, plr = 4}
+			end
+			
+			fluct = fluct * -1
+		end
+	end
+	
+	for i = 304, 305.5, 0.75 do
+		ease{i, 0.75, flip(outCubic), -150, 'boost', plr = {3,4}}
+	end
+	
+	--last mods part
+	perframe{324, 16, function(beat, poptions)
+		for pn = 1, 2 do
+			poptions[pn].tornado  = -25 * math.cos( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 - ((324-308)/8) ) + d2_circoff )
+			poptions[pn].tornadoz = -25 * math.sin( 2*math.pi * ( ( 4*(pn-1)+ 1.5 )/8 - ((324-308)/8) ) + d2_circoff )
+		
+			for c = 0, 3 do
+				local ang = 2*math.pi * ( ( 4*(pn-1)+c )/8 - ((324-308)/8) ) + d2_circoff
+			
+				poptions[pn]['movex'..c] = d2_circsize * math.cos( ang )
+				poptions[pn]['movez'..c] = d2_circsize * math.sin( ang )
+				
+				poptions[pn]['bumpyx'..c] = -225 * math.cos( ang )
+				poptions[pn]['bumpyz'..c] = -225 * math.sin( ang )
+			end
+		end
+	end}
+	
+	local fluct = 1
+	for i = 325.5, 333.5, 4 do
+		add{i    , 1, outCubic, 90 * fluct, 'd2circoffset', plr = 1}
+		add{i+1.5, 1, outCubic, 90 * fluct, 'd2circoffset', plr = 1}
+		
+		set{i, 50, 'stealth'}
+		ease{i, 1, outCubic,  0, 'stealth',   0, 'confusionzoffset', plr = 1}
+		ease{i, 1, outCubic, 80, 'stealth', 314, 'confusionzoffset', plr = 2}
+		
+		set{i+1.5, 50, 'stealth'}
+		ease{i+1.5, 1, outCubic, 80, 'stealth', 314, 'confusionzoffset', plr = 1}
+		ease{i+1.5, 1, outCubic,  0, 'stealth',   0, 'confusionzoffset', plr = 2}
+		
+		ease{i    , 1, flip(outCubic),  50, 'bumpyz'}
+		ease{i+1.5, 1, flip(outCubic), -50, 'bumpyz'}
+		
+		fluct = fluct * -1
+	end
+	
+	local d2lastnd = P[1]:GetNoteData(324, 335.75)
+	for i, v in ipairs(d2lastnd) do
+		ease{v[1], 0.5, flip(outCubic), -250, 'tiny', -250, 'tinyz', 25, 'arrowpath'}
+	end
 	
 	--resetting stuffs for nitgfan
 	func{340, function()
 		under.frame:hidden(1)
 		under.aft:hidden(1)
 		under.aftsp:hidden(1)
+		
+		itgfish.frame:hidden(1)
+		modelzoom(itgfish.model, 0)
+		itgfish.frame:z(0)
+		
+		drop2.ppframe:hidden(1)
 	end, persist=true}
-	reset{340}
 	
 --??. Drop 4 : Arrow Torpedo
 	--ActorProxies for this section
@@ -40,7 +343,6 @@
 		PP_D4[pn]:SetTarget(P[pn]:GetChild('NoteField'))
 	end
 	
-	P[3]:SetAwake(true)
 	PP_D4plus:SetTarget(P[3]:GetChild('NoteField'))
 	
 	definemod{'drop4rotz', function(rz)
@@ -113,17 +415,19 @@
 	
 	--torpedo mods??
 	function forbiddenspline(pn, amt)
-		P[pn]:SetXSpline(0,-1,-500*amt,-100,-1)	
-		P[pn]:SetXSpline(1,-1,0,100,-1)
-		P[pn]:SetXSpline(2,-1,-20*amt,400,-1)
-		P[pn]:SetRotZSpline(0,-1,-100*amt,-100,-1)
-		P[pn]:SetRotZSpline(1,-1,20*amt,200,-1)
-		P[pn]:SetRotZSpline(2,-1,0,400,-1)
-		P[pn]:SetZSpline(0,-1,3000*amt,-500,-1)
-		P[pn]:SetZSpline(1,-1,0,500,-1)
+		P[pn]:SetXSpline(0, -1,-500*amt, -100, -1)	
+		P[pn]:SetXSpline(1, -1,       0,  100, -1)
+		P[pn]:SetXSpline(2, -1, -20*amt,  400, -1)
+		
+		P[pn]:SetRotZSpline(0, -1, -100*amt,-100, -1)
+		P[pn]:SetRotZSpline(1, -1,   20*amt, 200, -1)
+		P[pn]:SetRotZSpline(2, -1,        0, 400, -1)
+		
+		P[pn]:SetZSpline(0, -1, 3000*amt, -500, -1)
+		P[pn]:SetZSpline(1, -1,        0,  500, -1)
 	end
 	
-	set{568, 30, 'flip', 100, 'wave', -512, 'z', 3, 'xmod', 100, 'sudden', 200, 'suddenoffset', 100, 'drawsize', 50, 'movey'}
+	set{568, 30, 'flip', 100, 'wave', -512, 'z', 3, 'xmod', 100, 'sudden', 400, 'suddenoffset', 100, 'drawsize', 50, 'movey'}
 	set{568, -90, 'rotationz',  157, 'confusionzoffset', plr = 1}
 	set{568,  90, 'rotationz', -157, 'confusionzoffset', plr = 2}
 	

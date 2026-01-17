@@ -29,6 +29,14 @@
 		</children></Layer>
 	</children></Layer>
 	
+	<Layer Type = "ActorFrame" Name = "drop2.ppframe"><children>
+		<Layer Type = "ActorProxy" Name = "PP_D2[1]"/>
+		<Layer Type = "ActorProxy" Name = "PP_D2[2]"/>
+		
+		<Layer Type = "ActorProxy"  Name = "PP_D2plus[1]"/>
+		<Layer Type = "ActorProxy"  Name = "PP_D2plus[2]"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorFrame" Name = "drop3.ppframe" OnCommand="%function(self) self:hidden(1)end" ><children>
 		<Layer File = "assets/nitgfan/itgb" Name = "drop3.bg"/>
 		<Layer Type = "ActorProxy" Name = "PP_D3[1]"/>
