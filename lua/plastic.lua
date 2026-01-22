@@ -1,4 +1,273 @@
 --code goes here here :)
+--??. Batman 1
+	for pn = 1, 2 do
+		ease{64-1.5, 3, inOutCubic, scx*(2*pn-3), 'x', plr = pn}
+	end
+
+	func{64+1.5, function()
+		for pn = 1, 2 do
+			PP[pn]:hidden(1)
+		end
+	end, persist=true}
+	set{64+1.5, 0, 'x'}
+	
+	--batman panel aft setups
+	apanel.frame:xy(scx, scy)
+	apanel.frame:fov(RealFov(45))
+	apanel.frame:hidden(1)
+	
+	bpanel.frame:xy(scx, scy)
+	bpanel.frame:fov(RealFov(45))
+	bpanel.frame:hidden(1)
+	
+	apanel.bg:xywh(0, 0, sw, sh)
+	apanel.bg:diffuse(1, 0, 0, 1)
+	bpanel.bg:xywh(0, 0, sw, sh)
+	bpanel.bg:diffuse(0, 0, 1, 1)
+	
+	PP_BA:SetTarget(P[1]:GetChild('NoteField'))
+	PP_BB:SetTarget(P[2]:GetChild('NoteField'))
+	
+	for i = 1, #apanel.aft do
+		apanel.aft[i]:hidden(1)
+		bpanel.aft[i]:hidden(1)
+	end
+	
+	for i = 1, #batman.nozbuf do
+		batman.nozbuf[i]:xywh(scx, scy, sw, sh)
+		batman.nozbuf[i]:diffusealpha(0)
+		batman.nozbuf[i]:clearzbuffer(1)
+	end
+	
+	--polygon texture functions
+	local function npot(val)
+		local out = 2
+		while out < val do
+			out = out*2
+		end
+		return out
+	end
+	
+	local function polytex(xpos, ypos)
+		tc_x = (scx + xpos)*(dw/sw)/npot(dw)
+		tc_y = (scy - ypos)*(dh/sh)/npot(dh)
+		
+		return tc_x, tc_y
+	end
+	
+	--batman panel setup
+	batman.bg:xywh(scx, scy, sw, sh)
+	batman.bg:diffuse(0, 0, 0, 1)
+	batman.bg:clearzbuffer(1)
+	batman.bg:hidden(1)
+	
+	batman.frame:xy(scx, scy)
+	batman.frame:hidden(1)
+	
+	local panel_wd = 600
+	local panel_ht = 240
+	
+	for i = 1, #batman.panel do
+		batman.panelbg[i]:SetNumVertices(4)
+		batman.panelbg[i]:SetPolygonMode(0)
+		batman.panelbg[i]:SetDrawMode('quads')
+		
+		batman.panelbg[i]:xy( panel_wd/4*(2*i-3), 0)
+		batman.panelbg[i]:zoom(0.95)
+	
+		batman.panel[i]:SetNumVertices(4)
+		batman.panel[i]:SetPolygonMode(0)
+		batman.panel[i]:SetDrawMode('quads')
+		
+		batman.panel[i]:xy( panel_wd/4*(2*i-3), 0)
+		batman.panel[i]:zoom(0.95)
+	end
+	
+	local v_apanel = {
+		{-panel_wd/4, -panel_ht/2},
+		{          0,           0},
+		{          0,           0},
+		{-panel_wd/4,  panel_ht/2}
+	}
+	
+	local v_bpanel = {
+		{ panel_wd/4, -panel_ht/2},
+		{          0,           0},
+		{          0,           0},
+		{ panel_wd/4,  panel_ht/2}
+	}
+	
+	definemod{'comicscroll', 'comicalpha', function(yp, alp)
+		batman.frame:y(scy - yp)
+		batman_ypos = yp
+		batman_alpha = alp/100
+	end}
+	
+	local panelalphatbl = {0, 0, 0, 0, 0, 0}
+	definemod{'panelalpha1a', 'panelalpha1b', 'panelalpha2a', 'panelalpha2b', 'panelalpha3a', 'panelalpha3b',
+		function(a1a, a1b, a2a, a2b, a3a, a3b)
+		
+		panelalphatbl[1] = a1a/100
+		panelalphatbl[2] = a1b/100
+		
+		panelalphatbl[3] = a2a/100
+		panelalphatbl[4] = a2b/100
+		
+		panelalphatbl[5] = a3a/100
+		panelalphatbl[6] = a3b/100
+	end}
+	
+	local function modulo(a, b)
+		return a - math.floor(a/b)*b;
+	end
+		
+	local function randomXD(t)
+		if t == 0 then return 0.5 else
+		return modulo(math.sin(t * 3229.3) * 43758.5453, 1) end
+	end
+	
+	local function draw_panels()
+		batman.bg:Draw()
+	
+		local nS = 1 + math.floor( batman_ypos/panel_ht )
+		local nE = nS + 2
+	
+		for i = nS, nE do
+			local dir = 1-2*(i%2)
+		
+			local panel_off1 = 64*randomXD(688*i)
+			local panel_off2 = 64*randomXD(564*i)
+			
+			v_apanel[2] = { panel_wd/4+panel_off1*dir, -panel_ht/2}
+			v_apanel[3] = { panel_wd/4-panel_off2*dir,  panel_ht/2}
+			
+			v_bpanel[2] = {-panel_wd/4+panel_off1*dir, -panel_ht/2}
+			v_bpanel[3] = {-panel_wd/4-panel_off2*dir,  panel_ht/2}
+			
+			for v = 0, 3 do
+				local vx_a, vy_a = v_apanel[v+1][1], v_apanel[v+1][2]
+				local vx_b, vy_b = v_bpanel[v+1][1], v_bpanel[v+1][2]
+				
+				local tx_a, ty_a = polytex(vx_a, vy_a)
+				local tx_b, ty_b = polytex(vx_b, vy_b)
+				
+				batman.panelbg[1]:SetVertexPosition(v, vx_a, vy_a, 0)
+				batman.panelbg[2]:SetVertexPosition(v, vx_b, vy_b, 0)
+				
+				batman.panel[1]:SetVertexPosition(v, vx_a, vy_a, 0)
+				batman.panel[1]:SetVertexTexCoord(v, tx_a, ty_a, 0)
+				batman.panel[2]:SetVertexPosition(v, vx_b, vy_b, 0)
+				batman.panel[2]:SetVertexTexCoord(v, tx_b, ty_b, 0)
+			end
+			
+			batman.panel[1]:SetTexture(apanel.aft[ (i-1)%3+1 ]:GetTexture())
+			batman.panel[2]:SetTexture(bpanel.aft[ (i-1)%3+1 ]:GetTexture())
+			
+			for n = 1, 2 do
+				batman.panelbg[n]:y(-120 + panel_ht*(i-1))
+				batman.panelbg[n]:diffusealpha(batman_alpha)
+				batman.panelbg[n]:Draw()
+				
+				batman.panel[n]:y(-120 + panel_ht*(i-1))
+				batman.panel[n]:diffusealpha( panelalphatbl[ 2*((i-1)%3)+n ] )  
+				batman.panel[n]:Draw()
+			end
+		end
+	end
+	
+	batman.frame:SetDrawFunction(draw_panels)
+	
+	func{64, function()
+		apanel.frame:hidden(0)
+		bpanel.frame:hidden(0)
+		
+		batman.bg:hidden(0)
+		batman.frame:hidden(0)
+	end, persist=true}
+	
+	function InLinOut(b, inInfo, l_lin, outInfo, amt, mod, pn)
+		local n_i, l_i =  inInfo[1],  inInfo[2]
+		local n_o, l_o = outInfo[1], outInfo[2]
+		
+		local coef_in, coef_out = l_i/l_lin/n_i, l_o/l_lin/n_o
+		
+		local amt_lin = amt / (coef_in + 1 + coef_out)
+		local amt_in, amt_out = amt_lin*coef_in, amt_lin*coef_out
+			
+		if n_i == 2 then
+			add{b          , l_i,  inQuad, amt_in , mod, plr = pn}
+		elseif n_i == 3 then
+			add{b          , l_i,  inCubic, amt_in , mod, plr = pn}
+		elseif n_i == 4 then
+			add{b          , l_i,  inQuart, amt_in , mod, plr = pn}
+		end
+		
+		add{b+l_i, l_lin, linear, amt_lin, mod, plr = pn}
+			
+		if n_o == 2 then
+			add{b+l_i+l_lin, l_o, outQuad, amt_out, mod, plr = pn}
+		elseif n_o == 3 then
+			add{b+l_i+l_lin, l_o, outCubic, amt_out, mod, plr = pn}
+		elseif n_o == 4 then
+			add{b+l_i+l_lin, l_o, outQuart, amt_out, mod, plr = pn}
+		end
+	end
+	
+	--scrolling down
+	for i = 80, 120, 8 do
+		add{i-3, 6, inOutCubic, panel_ht, 'comicscroll', plr = 1}
+	end
+	
+	--panel alphas
+	ease{64-2, 4, inOutCubic, 100, 'comicalpha', plr = 1}
+	
+	for i = 68, 128, 8 do
+		local np = 1 + ( (i-68)/8 )%3
+	
+		func{i-2, function() apanel.aft[np]:hidden(0) end, persist=true}
+		ease{i-2, 4, inOutCubic, 100, 'panelalpha'..np..'a', plr = 1}
+		
+		func{i+2, function() bpanel.aft[np]:hidden(0) end, persist=true}
+		ease{i+2, 4, inOutCubic, 100, 'panelalpha'..np..'b', plr = 1}
+		
+		func{i+4, function() apanel.aft[np]:hidden(1) end, persist=true}
+		func{i+8, function() bpanel.aft[np]:hidden(1) end, persist=true}
+		
+		if i < 116 then
+			set{i+12+2, 0, 'panelalpha'..np..'a', 0, 'panelalpha'..np..'b', plr = 1}
+		end
+	end
+	
+	--batman placeholder mods for check
+	set{66, 50, 'mini', 64, 'y'}
+	
+	ease{66, 66, linear,  360*4, 'coolrotationy', plr = 1}
+	ease{66, 66, linear, -360*4, 'coolrotationy', plr = 2}
+	
+	--RESET
+	func{132, function()
+		for pn = 1, 2 do
+			PP[pn]:hidden(0)
+		end
+		
+		apanel.frame:hidden(1)
+		bpanel.frame:hidden(1)
+		
+		batman.bg:hidden(1)
+		batman.frame:hidden(1)
+	end, persist=true}
+
+	reset{132}
+
+	drop3fade.aft:hidden(1)
+	drop3fade.sprite:hidden(1)
+	
+	drop3scroll.aft:hidden(1)
+	drop3scroll.sprite:hidden(1)
+	
+	drop3glitch.aft:hidden(1)
+	drop3glitch.sprite:hidden(1)
+
 --??. Drop 2???
 	--ActorProxies for this section
 	drop2.ppframe:xy(scx, scy)
@@ -205,34 +474,6 @@
 	
 	ease{288, 4, inOutCubic,   256, 'drop2orbitrad', plr = {3,4}}
 	ease{306, 4, inOutCubic, 3*scx, 'drop2orbitrad', plr = {3,4}}
-	
-	function InLinOut(b, inInfo, l_lin, outInfo, amt, mod, pn)
-		local n_i, l_i =  inInfo[1],  inInfo[2]
-		local n_o, l_o = outInfo[1], outInfo[2]
-		
-		local coef_in, coef_out = l_i/l_lin/n_i, l_o/l_lin/n_o
-		
-		local amt_lin = amt / (coef_in + 1 + coef_out)
-		local amt_in, amt_out = amt_lin*coef_in, amt_lin*coef_out
-			
-		if n_i == 2 then
-			add{b          , l_i,  inQuad, amt_in , mod, plr = pn}
-		elseif n_i == 3 then
-			add{b          , l_i,  inCubic, amt_in , mod, plr = pn}
-		elseif n_i == 4 then
-			add{b          , l_i,  inQuart, amt_in , mod, plr = pn}
-		end
-		
-		add{b+l_i, l_lin, linear, amt_lin, mod, plr = pn}
-			
-		if n_o == 2 then
-			add{b+l_i+l_lin, l_o, outQuad, amt_out, mod, plr = pn}
-		elseif n_o == 3 then
-			add{b+l_i+l_lin, l_o, outCubic, amt_out, mod, plr = pn}
-		elseif n_o == 4 then
-			add{b+l_i+l_lin, l_o, outQuart, amt_out, mod, plr = pn}
-		end
-	end
 	
 	set{272,  180, 'drop2orbitangle', plr = 3}
 	set{272,    0, 'drop2orbitangle', plr = 4}

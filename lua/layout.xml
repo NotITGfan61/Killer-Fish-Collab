@@ -29,6 +29,33 @@
 		</children></Layer>
 	</children></Layer>
 	
+	<Layer Type = "ActorFrame" Name = "apanel.frame"><children>
+		<Layer Type = "Quad" Name = "apanel.bg"/>
+		<Layer Type = "ActorProxy" Name = "PP_BA"/>
+	</children></Layer>
+	<Layer Type = "ActorFrameTexture" Name = "apanel.aft[1]" InitCommand = "%xero.aft"/>
+	<Layer Type = "ActorFrameTexture" Name = "apanel.aft[2]" InitCommand = "%xero.aft"/>
+	<Layer Type = "ActorFrameTexture" Name = "apanel.aft[3]" InitCommand = "%xero.aft"/>
+	<Layer Type = "Quad" Name = "batman.nozbuf[1]"/>
+	
+	<Layer Type = "ActorFrame" Name = "bpanel.frame"><children>
+		<Layer Type = "Quad" Name = "bpanel.bg"/>
+		<Layer Type = "ActorProxy" Name = "PP_BB"/>
+	</children></Layer>
+	<Layer Type = "ActorFrameTexture" Name = "bpanel.aft[1]" InitCommand = "%xero.aft"/>
+	<Layer Type = "ActorFrameTexture" Name = "bpanel.aft[2]" InitCommand = "%xero.aft"/>
+	<Layer Type = "ActorFrameTexture" Name = "bpanel.aft[3]" InitCommand = "%xero.aft"/>
+	<Layer Type = "Quad" Name = "batman.nozbuf[2]"/>
+	
+	<Layer Type  = "Quad" Name = "batman.bg"/>
+	<Layer Type = "ActorFrame" Name = "batman.frame"><children>
+		<Layer Type = "Polygon" Name = "batman.panelbg[1]"/>
+		<Layer Type = "Polygon" Name = "batman.panelbg[2]"/>
+	
+		<Layer Type = "Polygon" Name = "batman.panel[1]"/>
+		<Layer Type = "Polygon" Name = "batman.panel[2]"/>
+	</children></Layer>
+	
 	<Layer Type = "ActorFrame" Name = "drop2.ppframe"><children>
 		<Layer Type = "ActorProxy" Name = "PP_D2[1]"/>
 		<Layer Type = "ActorProxy" Name = "PP_D2[2]"/>
