@@ -1,5 +1,6 @@
 --code goes here here :)
---??. Batman 1
+--??. Batman 2
+	--[[
 	for pn = 1, 2 do
 		ease{64-1.5, 3, inOutCubic, scx*(2*pn-3), 'x', plr = pn}
 	end
@@ -10,6 +11,7 @@
 		end
 	end, persist=true}
 	set{64+1.5, 0, 'x'}
+	--]]
 	
 	--batman panel aft setups
 	apanel.frame:xy(scx, scy)
@@ -177,7 +179,7 @@
 	
 	batman.frame:SetDrawFunction(draw_panels)
 	
-	func{64, function()
+	func{340, function()
 		apanel.frame:hidden(0)
 		bpanel.frame:hidden(0)
 		
@@ -214,15 +216,15 @@
 	end
 	
 	--scrolling down
-	for i = 80, 120, 8 do
+	for i = 356, 396, 8 do
 		add{i-3, 6, inOutCubic, panel_ht, 'comicscroll', plr = 1}
 	end
 	
 	--panel alphas
-	ease{64-2, 4, inOutCubic, 100, 'comicalpha', plr = 1}
+	ease{340, 4, inOutCubic, 100, 'comicalpha', plr = 1}
 	
-	for i = 68, 128, 8 do
-		local np = 1 + ( (i-68)/8 )%3
+	for i = 344, 384, 8 do
+		local np = 1 + ( (i-344)/8 )%3
 	
 		func{i-2, function() apanel.aft[np]:hidden(0) end, persist=true}
 		ease{i-2, 4, inOutCubic, 100, 'panelalpha'..np..'a', plr = 1}
@@ -233,19 +235,19 @@
 		func{i+4, function() apanel.aft[np]:hidden(1) end, persist=true}
 		func{i+8, function() bpanel.aft[np]:hidden(1) end, persist=true}
 		
-		if i < 116 then
+		if i < 372 then
 			set{i+12+2, 0, 'panelalpha'..np..'a', 0, 'panelalpha'..np..'b', plr = 1}
 		end
 	end
 	
 	--batman placeholder mods for check
-	set{66, 50, 'mini', 64, 'y'}
+	set{342, 50, 'mini', 64, 'y'}
 	
-	ease{66, 66, linear,  360*4, 'coolrotationy', plr = 1}
-	ease{66, 66, linear, -360*4, 'coolrotationy', plr = 2}
+	ease{342, 66, linear,  360*4, 'coolrotationy', plr = 1}
+	ease{342, 66, linear, -360*4, 'coolrotationy', plr = 2}
 	
 	--RESET
-	func{132, function()
+	func{436, function()
 		for pn = 1, 2 do
 			PP[pn]:hidden(0)
 		end
@@ -257,8 +259,9 @@
 		batman.frame:hidden(1)
 	end, persist=true}
 
-	reset{132}
+	reset{436}
 
+	--[[
 	drop3fade.aft:hidden(1)
 	drop3fade.sprite:hidden(1)
 	
@@ -267,6 +270,7 @@
 	
 	drop3glitch.aft:hidden(1)
 	drop3glitch.sprite:hidden(1)
+	--]]
 
 --??. Drop 2???
 	--ActorProxies for this section
