@@ -179,7 +179,7 @@
 	
 	batman.frame:SetDrawFunction(draw_panels)
 	
-	func{340, function()
+	func{360-2, function()
 		apanel.frame:hidden(0)
 		bpanel.frame:hidden(0)
 		
@@ -216,35 +216,41 @@
 	end
 	
 	--scrolling down
-	for i = 356, 396, 8 do
+	for i = 392, 408, 16 do
 		add{i-3, 6, inOutCubic, panel_ht, 'comicscroll', plr = 1}
 	end
 	
 	--panel alphas
-	ease{340, 4, inOutCubic, 100, 'comicalpha', plr = 1}
+	ease{360-2, 4, inOutCubic, 100, 'comicalpha', plr = 1}
 	
-	for i = 344, 384, 8 do
-		local np = 1 + ( (i-344)/8 )%3
+	--[[
+	func{368-2, function() apanel.aft[1]:hidden(0) end, persist=true}
+	ease{368-2, 4, inOutCubic, 100, 'panelalpha1a', plr = 1}
+	
+	func{368+2, function() bpanel.aft[1]:hidden(0) end, persist=true}
+	ease{368+2, 4, inOutCubic, 100, 'panelalpha1b', plr = 1}
+	
+	func{368+4, function() apanel.aft[1]:hidden(1) end, persist=true}
+	func{380  , function() bpanel.aft[1]:hidden(1) end, perist=true}
+	
+	set{368+24+3, 0, 'panelalpha1a', 0, 'panelalpha1b', plr = 1}
+	--]]
+	for i = 364, 412, 16 do
+		local np = 1 + ((i-364)/16 )%3
 	
 		func{i-2, function() apanel.aft[np]:hidden(0) end, persist=true}
 		ease{i-2, 4, inOutCubic, 100, 'panelalpha'..np..'a', plr = 1}
 		
-		func{i+2, function() bpanel.aft[np]:hidden(0) end, persist=true}
-		ease{i+2, 4, inOutCubic, 100, 'panelalpha'..np..'b', plr = 1}
+		func{i+6, function() bpanel.aft[np]:hidden(0) end, persist=true}
+		ease{i+6, 4, inOutCubic, 100, 'panelalpha'..np..'b', plr = 1}
 		
-		func{i+4, function() apanel.aft[np]:hidden(1) end, persist=true}
-		func{i+8, function() bpanel.aft[np]:hidden(1) end, persist=true}
+		func{i+8, function() apanel.aft[np]:hidden(1) end, persist=true}
+		func{i+16, function() bpanel.aft[np]:hidden(1) end, persist=true}
 		
-		if i < 372 then
-			set{i+12+2, 0, 'panelalpha'..np..'a', 0, 'panelalpha'..np..'b', plr = 1}
+		if i < 384 then
+			set{i+28+3, 0, 'panelalpha'..np..'a', 0, 'panelalpha'..np..'b', plr = 1}
 		end
 	end
-	
-	--batman placeholder mods for check
-	set{342, 50, 'mini', 64, 'y'}
-	
-	ease{342, 66, linear,  360*4, 'coolrotationy', plr = 1}
-	ease{342, 66, linear, -360*4, 'coolrotationy', plr = 2}
 	
 	--RESET
 	func{436, function()
