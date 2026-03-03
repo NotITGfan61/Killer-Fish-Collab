@@ -326,6 +326,46 @@ end}
 func_ease {196-1.5, 3, SmoothS, 0, 360, 'text.model:z'}
 
 
+---------------------- batfish Setup --------------------------------
+set{360,50,'brake',80,'zoom',100,'bumpyyperiod',500,'drunkspeed',100,'orient',250,'bumpyoffset'}
+
+ease2{372,4,ExpoS,60,'bumpyy',25,'drunk',-150,'bumpy'}
+
+func {0, function()
+	comic.sprite:hidden(1)
+end}
+
+func {340, function()
+	comic.sprite:hidden(0)
+end}
+
+func {432, function()
+	comic.sprite:hidden(1)
+end}
+
+local f = 1
+local playerInformation = SCREENMAN:GetTopScreen():GetChild('PlayerP1')
+local dundundun = playerInformation:GetNoteData(372, 429)
+for i,v in ipairs(dundundun) do
+	if v[2] == 0 then
+		kick(v[1],0.5,2,'Expo','Elastic',0,100,'tinyy0')
+		kick(v[1],0.5,2,'Expo','Elastic',0,50,'movey0')
+	elseif v[2] == 1 then
+		kick(v[1],0.5,2,'Expo','Elastic',0,100,'tinyy1')
+		kick(v[1],0.5,2,'Expo','Elastic',0,50,'movey1')
+	elseif v[2] == 2 then
+		kick(v[1],0.5,2,'Expo','Elastic',0,100,'tinyy2')
+		kick(v[1],0.5,2,'Expo','Elastic',0,50,'movey2')
+	elseif v[2] == 3 then
+		kick(v[1],0.5,2,'Expo','Elastic',0,100,'tinyy3')
+		kick(v[1],0.5,2,'Expo','Elastic',0,50,'movey3')
+	end
+	
+f = f * -1
+end
+
+
+
 ---------------------- Drop 3 Setup --------------------------------
 
 AfSetup(drop3.ppframe,90)

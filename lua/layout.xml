@@ -118,5 +118,8 @@
 
 	<Layer Type = "ActorFrameTexture" Name = "under.aft" InitCommand = "%xero.aft"/>
 	<Layer Type = "Sprite" Frag = "assets/plastic/shaders/waterwibble.frag" Name = "under.aftsp" InitCommand = "%xero.sprite"/>
+	
+	<Layer Type = "ActorFrameTexture" Name = "comic.aft" InitCommand = "%xero.aft"/>
+	<Layer Type = "Sprite"  Frag = "assets/shaders/comic.frag" Name = "comic.sprite" InitCommand = "%xero.sprite" OnCommand="%function(self) self:hidden(1)end"/>
 
 </children></Layer>

@@ -176,6 +176,8 @@ definemod {'shake', function(p,pn) -- I'm using this hopefully this won't cause 
 	P[pn]:effectclock('beat')
 end}
 
+shader(comic.sprite,comic.aft)
+
 ----------------------------------------------------------------------------------------------FUNCTION STUFF GOES HERE-----------------------------------------------------------------------------------------------------------------------
 
 reset{60}
