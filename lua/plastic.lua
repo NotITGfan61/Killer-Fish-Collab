@@ -119,6 +119,21 @@
 		panelalphatbl[6] = a3b/100
 	end}
 	
+	local panelcomictbl = {0, 0, 0, 0, 0, 0}
+	definemod{'panelcomic1a', 'panelcomic1b', 'panelcomic2a', 'panelcomic2b', 'panelcomic3a', 'panelcomic3b',
+		function(a1a, a1b, a2a, a2b, a3a, a3b)
+		
+		panelcomictbl[1] = a1a/100
+		panelcomictbl[2] = a1b/100
+		
+		panelcomictbl[3] = a2a/100
+		panelcomictbl[4] = a2b/100
+		
+		panelcomictbl[5] = a3a/100
+		panelcomictbl[6] = a3b/100
+	end}
+	
+	
 	local function modulo(a, b)
 		return a - math.floor(a/b)*b;
 	end
@@ -172,6 +187,7 @@
 				
 				batman.panel[n]:y(-120 + panel_ht*(i-1))
 				batman.panel[n]:diffusealpha( panelalphatbl[ 2*((i-1)%3)+n ] )  
+				batman.panel[n]:GetShader():uniform1f('comicAmt', panelcomictbl[ 2*((i-1)%3)+n ] )
 				batman.panel[n]:Draw()
 			end
 		end
@@ -223,26 +239,20 @@
 	--panel alphas
 	ease{360-2, 4, inOutCubic, 100, 'comicalpha', plr = 1}
 	
-	--[[
-	func{368-2, function() apanel.aft[1]:hidden(0) end, persist=true}
-	ease{368-2, 4, inOutCubic, 100, 'panelalpha1a', plr = 1}
-	
-	func{368+2, function() bpanel.aft[1]:hidden(0) end, persist=true}
-	ease{368+2, 4, inOutCubic, 100, 'panelalpha1b', plr = 1}
-	
-	func{368+4, function() apanel.aft[1]:hidden(1) end, persist=true}
-	func{380  , function() bpanel.aft[1]:hidden(1) end, perist=true}
-	
-	set{368+24+3, 0, 'panelalpha1a', 0, 'panelalpha1b', plr = 1}
-	--]]
 	for i = 364, 412, 16 do
 		local np = 1 + ((i-364)/16 )%3
-	
+		
+		set{i-2, 0, 'panelcomic'..np..'a', plr = 1}
 		func{i-2, function() apanel.aft[np]:hidden(0) end, persist=true}
 		ease{i-2, 4, inOutCubic, 100, 'panelalpha'..np..'a', plr = 1}
 		
+		ease{i+2, 4, inSine, 100, 'panelcomic'..np..'a', plr = 1}
+		
+		set{i+6, 0, 'panelcomic'..np..'b', plr = 1}
 		func{i+6, function() bpanel.aft[np]:hidden(0) end, persist=true}
 		ease{i+6, 4, inOutCubic, 100, 'panelalpha'..np..'b', plr = 1}
+		
+		ease{i+10, 4, inSine, 100, 'panelcomic'..np..'b', plr = 1}
 		
 		func{i+8, function() apanel.aft[np]:hidden(1) end, persist=true}
 		func{i+16, function() bpanel.aft[np]:hidden(1) end, persist=true}
@@ -251,6 +261,49 @@
 			set{i+28+3, 0, 'panelalpha'..np..'a', 0, 'panelalpha'..np..'b', plr = 1}
 		end
 	end
+	
+	--action bubbles
+	for i = 1, #apanel.bubble do
+		local i = i
+	
+		apanel.bubble[i]:rotationz( 30 * randomXD(67543*i) )
+	
+		definemod{'apanelbubblex'..i, 'apanelbubbley'..i, 'apanelbubblezoom'..i, function(xp, yp, zm)
+			apanel.bubble[i]:xy(xp, yp)
+			apanel.bubble[i]:zoom( zm/100 )
+		end}
+	end
+	
+	for i = 1, #bpanel.bubble do
+		local i = i
+	
+		bpanel.bubble[i]:rotationz( 30 * randomXD(23324*i) )
+	
+		definemod{'bpanelbubblex'..i, 'bpanelbubbley'..i, 'bpanelbubblezoom'..i, function(xp, yp, zm)
+			bpanel.bubble[i]:xy(xp, yp)
+			bpanel.bubble[i]:zoom( zm/100 )
+		end}
+	end
+	
+	--firt bubbles
+	set{406.5-0.5, -48, 'bpanelbubblex1', 48, 'bpanelbubbley1', plr = 1}
+	ease{406.5-0.5, 1, inOutCubic, 25, 'bpanelbubblezoom1', plr = 1}
+	
+	set{409-0.5, 24, 'bpanelbubblex2', -36, 'bpanelbubbley2', plr = 1}
+	ease{409-0.5, 1, inOutCubic, 30, 'bpanelbubblezoom2', plr = 1}
+	
+	set{412+1, 0, 'bpanelbubblezoom1', 0, 'bpanelbubblezoom2', plr = 1}
+	
+	--second buble
+	set{411.5-0.5, 0, 'apanelbubbley1', plr = 1}
+	ease{411.5-0.5, 1, inOutCubic, 40, 'apanelbubblezoom1', plr = 1}
+	
+	--third bubble
+	set{421-0.5, 48, 'bpanelbubblex1', 36, 'bpanelbubbley1', plr = 1}
+	ease{421-0.5, 1, inOutCubic, 35, 'bpanelbubblezoom1', plr = 1}
+	
+	set{424.5-0.5, -48, 'bpanelbubblex2', -48, 'bpanelbubbley2', plr = 1}
+	ease{424.5-0.5, 1, inOutCubic, 25, 'bpanelbubblezoom2', plr = 1}
 	
 	--RESET
 	func{436, function()

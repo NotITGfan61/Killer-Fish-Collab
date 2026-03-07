@@ -96,6 +96,23 @@ above.oceanlight:fadetop(0.4)
 above.oceanlight:fadebottom(0.5)
 above.oceanlight:clearzbuffer(1)
 
+above.shore:valign(1)
+above.shore:xy(0, 768-2)
+above.shore:z(-4096)
+above.shore:SetWidth(sky_size*2)
+above.shore:SetHeight(512*2)
+above.shore:customtexturerect(0, 0, 32, 0.25)
+above.shore:fadetop(0.75)
+above.shore:rotationx(-90)
+
+above.sand:valign(0)
+above.sand:xy(0, 768-2)
+above.sand:z(-4096)
+above.sand:SetWidth(sky_size*2)
+above.sand:SetHeight(512*2*16)
+above.sand:customtexturerect(0, 0, 32, 0.25*16)
+above.sand:rotationx(-90)
+
 -----------for testing purposes --------------
 func{212, function()
 	above.frame:hidden(0)
@@ -175,8 +192,6 @@ definemod {'shake', function(p,pn) -- I'm using this hopefully this won't cause 
 	P[pn]:effectmagnitude(p,0,0)
 	P[pn]:effectclock('beat')
 end}
-
-shader(comic.sprite,comic.aft)
 
 ----------------------------------------------------------------------------------------------FUNCTION STUFF GOES HERE-----------------------------------------------------------------------------------------------------------------------
 

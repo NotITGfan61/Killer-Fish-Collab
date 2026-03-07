@@ -8,9 +8,11 @@ uniform vec2 imageSize;
 uniform vec2 textureSize;
 varying vec2 textureCoord;
 varying vec2 imageCoord;
+varying vec4 color;
 uniform sampler2D sampler0;
 uniform sampler2D samplerRandom;
 
+uniform float comicAmt = 0.0;
 
 vec2 img2tex( vec2 v ) { return v / textureSize * imageSize; }
 
@@ -47,7 +49,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec4 cmyk = cmyk(col);
     
     //Density of the dots
-    float dens = 100.0;
+    float dens = 150.0;
     
     //Rotation angles for different ink colors
     //http://the-print-guide.blogspot.com/2009/05/halftone-screen-angles.html
@@ -85,7 +87,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 kv = vec3(kb);
 
     // Output to screen
-    fragColor = vec4(vec3(1.0) - cv - mv - yv - kv,1.0);
+	vec3 col_hf = vec3(1.0) - cv - mv - yv - kv;
+	vec3 col_f = mix( col, col_hf, comicAmt );
+	
+    fragColor = vec4(col_f, 1.0) * color;
 } 
 ///original shadertoy ends here///
 

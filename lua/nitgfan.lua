@@ -331,18 +331,6 @@ set{360,50,'brake',80,'zoom',100,'bumpyyperiod',500,'drunkspeed',100,'orient',25
 
 ease2{372,4,ExpoS,60,'bumpyy',25,'drunk',-150,'bumpy'}
 
-func {0, function()
-	comic.sprite:hidden(1)
-end}
-
-func {340, function()
-	comic.sprite:hidden(0)
-end}
-
-func {432, function()
-	comic.sprite:hidden(1)
-end}
-
 local f = 1
 local playerInformation = SCREENMAN:GetTopScreen():GetChild('PlayerP1')
 local dundundun = playerInformation:GetNoteData(372, 429)

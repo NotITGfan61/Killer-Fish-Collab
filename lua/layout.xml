@@ -6,6 +6,8 @@
 	<Layer Type = "ActorFrame" Name = "above.frame"><children>
 		<Layer File = "assets/plastic/sphere.obj" Name = "above.sky"/>
 		<Layer Type = "Sprite" Frag = "assets/plastic/shaders/waterSUPERSEX.frag" Texture = "assets/plastic/stars2.jpg" Name = "above.ocean"/>
+		<Layer File = "assets/plastic/sand.png" Name = "above.shore"/>
+		<Layer File = "assets/plastic/sand.png" Name = "above.sand"/>
 		<Layer Type = "Quad" Name = "above.oceanlight"/>
 	</children></Layer>
 	
@@ -32,6 +34,7 @@
 	<Layer Type = "ActorFrame" Name = "apanel.frame"><children>
 		<Layer Type = "Quad" Name = "apanel.bg"/>
 		<Layer Type = "ActorProxy" Name = "PP_BA"/>
+		<Layer File = "assets/plastic/bubble.png" Name = "apanel.bubble[1]"/>
 	</children></Layer>
 	<Layer Type = "ActorFrameTexture" Name = "apanel.aft[1]" InitCommand = "%xero.aft"/>
 	<Layer Type = "ActorFrameTexture" Name = "apanel.aft[2]" InitCommand = "%xero.aft"/>
@@ -41,6 +44,8 @@
 	<Layer Type = "ActorFrame" Name = "bpanel.frame"><children>
 		<Layer Type = "Quad" Name = "bpanel.bg"/>
 		<Layer Type = "ActorProxy" Name = "PP_BB"/>
+		<Layer File = "assets/plastic/bubble.png" Name = "bpanel.bubble[1]"/>
+		<Layer File = "assets/plastic/bubble.png" Name = "bpanel.bubble[2]"/>
 	</children></Layer>
 	<Layer Type = "ActorFrameTexture" Name = "bpanel.aft[1]" InitCommand = "%xero.aft"/>
 	<Layer Type = "ActorFrameTexture" Name = "bpanel.aft[2]" InitCommand = "%xero.aft"/>
@@ -52,8 +57,8 @@
 		<Layer Type = "Polygon" Name = "batman.panelbg[1]"/>
 		<Layer Type = "Polygon" Name = "batman.panelbg[2]"/>
 	
-		<Layer Type = "Polygon" Name = "batman.panel[1]"/>
-		<Layer Type = "Polygon" Name = "batman.panel[2]"/>
+		<Layer Type = "Polygon" Frag = "assets/shaders/comic.frag" Name = "batman.panel[1]"/>
+		<Layer Type = "Polygon" Frag = "assets/shaders/comic.frag" Name = "batman.panel[2]"/>
 	</children></Layer>
 	
 	<Layer Type = "ActorFrame" Name = "drop2.ppframe"><children>
@@ -118,8 +123,4 @@
 
 	<Layer Type = "ActorFrameTexture" Name = "under.aft" InitCommand = "%xero.aft"/>
 	<Layer Type = "Sprite" Frag = "assets/plastic/shaders/waterwibble.frag" Name = "under.aftsp" InitCommand = "%xero.sprite"/>
-	
-	<Layer Type = "ActorFrameTexture" Name = "comic.aft" InitCommand = "%xero.aft"/>
-	<Layer Type = "Sprite"  Frag = "assets/shaders/comic.frag" Name = "comic.sprite" InitCommand = "%xero.sprite" OnCommand="%function(self) self:hidden(1)end"/>
-
 </children></Layer>
